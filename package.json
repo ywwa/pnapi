@@ -1,0 +1,39 @@
+{
+  "name": "pnapi",
+  "version": "0.0.1",
+  "description": "API Wrapper for Paynow service",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint ./src/**/*",
+    "lint:fix": "eslint --fixt ./src/**/*",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "api",
+    "wrap",
+    "wrapper",
+    "paynow",
+    "axios"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ywwa/pnapi"
+  },
+  "author": {
+    "name": "Gabriels Kukutis",
+    "email": "gabripub@gmail.com",
+    "url": "https://github.com/ywwa"
+  },
+  "homepage": "https://github.com/ywwa/pnapi",
+  "bugs": {
+    "url": "https://github.com/ywwa/pnapi/issues"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
