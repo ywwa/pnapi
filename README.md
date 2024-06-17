@@ -1,5 +1,5 @@
 # PNAPI
 
-## :> [!WARNING]
+## WARNING :warning:
 
-> In very early stages of development, this package is still in beta. It is not recommended for production use.
+> In very early stages of development, this package is still in alpha. It is not recommended for production use.
