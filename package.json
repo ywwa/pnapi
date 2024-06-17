@@ -1,5 +1,5 @@
 {
-  "name": "pnapi",
+  "name": "@ywwa/pnapi",
   "version": "0.0.1",
   "description": "API Wrapper for Paynow service",
   "main": "dist/index.js",
