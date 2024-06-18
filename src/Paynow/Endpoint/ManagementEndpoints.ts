@@ -1,16 +1,23 @@
-import { CustomerEndpoints, GameserverEndpoints, StoreEndpoints } from ".";
+import {
+  CustomerEndpoints,
+  GameserverEndpoints,
+  ProductEndpoints,
+  StoreEndpoints,
+} from ".";
 import { BaseEndpoint } from "../../lib";
 
 export class ManagementEndpoints extends BaseEndpoint {
   private readonly __stores: StoreEndpoints;
   private readonly __customers: CustomerEndpoints;
   private readonly __gameservers: GameserverEndpoints;
+  private readonly __products: ProductEndpoints;
 
   constructor(store_id: string) {
     super(store_id);
     this.__stores = new StoreEndpoints(this._storeId);
     this.__customers = new CustomerEndpoints(this._storeId);
     this.__gameservers = new GameserverEndpoints(this._storeId);
+    this.__products = new ProductEndpoints(this._storeId);
   }
 
   /** Store endpoints */
@@ -26,5 +33,10 @@ export class ManagementEndpoints extends BaseEndpoint {
   /** Gameserver endpoints */
   public get gameservers(): GameserverEndpoints {
     return this.__gameservers;
+  }
+
+  /** Product endpoints */
+  public get products(): ProductEndpoints {
+    return this.__products;
   }
 }
