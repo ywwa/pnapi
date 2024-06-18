@@ -1,7 +1,7 @@
-import { type TokenResponseDTO } from "../../../dtos";
-import { BaseApi } from "../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../types";
-import { type TokenEndpoints } from "../../Endpoint";
+import { type TokenResponseDTO } from "../../../../dtos";
+import { BaseApi } from "../../../../lib";
+import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type TokenEndpoints } from "../../../Endpoint";
 
 export class TokenApi extends BaseApi {
   private readonly __ep: TokenEndpoints;

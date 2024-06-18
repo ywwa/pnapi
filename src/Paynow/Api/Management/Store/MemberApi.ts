@@ -1,8 +1,8 @@
 import { z, type ZodSchema } from "zod";
-import { type MemberResponseDTO } from "../../../dtos";
-import { BaseApi } from "../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../types";
-import { type MemberEndpoints } from "../../Endpoint";
+import { type MemberResponseDTO } from "../../../../dtos";
+import { BaseApi } from "../../../../lib";
+import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type MemberEndpoints } from "../../../Endpoint";
 
 export class MemberApi extends BaseApi {
   private readonly __ep: MemberEndpoints;

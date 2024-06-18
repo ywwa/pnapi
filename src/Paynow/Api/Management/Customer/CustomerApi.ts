@@ -4,10 +4,10 @@ import {
   type CustomerLookupRequestDTO,
   type CustomerRequestDTO,
   type CustomerResponseDTO,
-} from "../../../dtos";
-import { BaseApi } from "../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../types";
-import { type CustomerEndpoints } from "../../Endpoint";
+} from "../../../../dtos";
+import { BaseApi } from "../../../../lib";
+import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type CustomerEndpoints } from "../../../Endpoint";
 
 export class CustomerApi extends BaseApi {
   private readonly __ep: CustomerEndpoints;

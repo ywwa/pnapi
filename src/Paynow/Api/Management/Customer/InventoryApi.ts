@@ -2,10 +2,10 @@ import { z, type ZodSchema } from "zod";
 import {
   type InventoryRequestDTO,
   type InventoryResponseDTO,
-} from "../../../dtos";
-import { BaseApi } from "../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../types";
-import { type InventoryEndpoints } from "../../Endpoint";
+} from "../../../../dtos";
+import { BaseApi } from "../../../../lib";
+import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type InventoryEndpoints } from "../../../Endpoint";
 
 export class InventoryApi extends BaseApi {
   private readonly __ep: InventoryEndpoints;
@@ -28,8 +28,8 @@ export class InventoryApi extends BaseApi {
       })
       .refine(
         (data) =>
-          data.product_id !== undefined ||
-          data.product_version_id !== undefined,
+          data.product_id === undefined ||
+          data.product_version_id === undefined,
         {
           message: "Either product_id or product_version_id must be provided",
           path: ["product_id", "product_version_id"],

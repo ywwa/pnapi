@@ -3,10 +3,10 @@ import { MemberApi } from ".";
 import {
   type StoreResponseDTO,
   type StoreUpdateRequestDTO,
-} from "../../../dtos";
-import { BaseApi } from "../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../types";
-import { type StoreEndpoints } from "../../Endpoint";
+} from "../../../../dtos";
+import { BaseApi } from "../../../../lib";
+import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type StoreEndpoints } from "../../../Endpoint";
 
 export class StoreApi extends BaseApi {
   private readonly __ep: StoreEndpoints;
