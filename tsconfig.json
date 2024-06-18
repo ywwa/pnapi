@@ -15,7 +15,8 @@
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": false,
     "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "removeComments": false
   },
   "exclude": ["node_modules", "dist", "jest", "example"]
 }
