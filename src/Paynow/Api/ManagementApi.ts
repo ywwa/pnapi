@@ -8,6 +8,7 @@ import {
   OrderApi,
   ProductApi,
   StoreApi,
+  SubscriptionApi,
   TagApi,
 } from "./Management";
 
@@ -20,6 +21,7 @@ export class ManagementApi extends BaseApi {
   private readonly __tag_api: TagApi;
   private readonly __navlink_api: NavlinkApi;
   private readonly __order_api: OrderApi;
+  private readonly __subscription_api: SubscriptionApi;
 
   constructor(config: ApiConfig) {
     super(config);
@@ -35,6 +37,10 @@ export class ManagementApi extends BaseApi {
     this.__tag_api = new TagApi(this._config, this.__ep.tags);
     this.__navlink_api = new NavlinkApi(this._config, this.__ep.navlinks);
     this.__order_api = new OrderApi(this._config, this.__ep.orders);
+    this.__subscription_api = new SubscriptionApi(
+      this._config,
+      this.__ep.subscriptions,
+    );
   }
 
   /** Store API */
@@ -70,5 +76,10 @@ export class ManagementApi extends BaseApi {
   /** Order API */
   public get Orders(): OrderApi {
     return this.__order_api;
+  }
+
+  /** Subscription API */
+  public get Subscriptions(): SubscriptionApi {
+    return this.__subscription_api;
   }
 }

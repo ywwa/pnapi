@@ -4,4 +4,5 @@ export * from "./Navlink.dto";
 export * from "./Order.dto";
 export * from "./Product.dto";
 export * from "./Store.dto";
+export * from "./Subscription.dto";
 export * from "./Tag.dto";

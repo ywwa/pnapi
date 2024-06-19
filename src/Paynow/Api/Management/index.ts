@@ -5,3 +5,4 @@ export * from "./Order";
 export * from "./Product";
 export * from "./Store";
 export * from "./Tag";
+export * from "./Subscription";

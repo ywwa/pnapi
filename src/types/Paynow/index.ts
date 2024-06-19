@@ -11,6 +11,7 @@ export * from "./Steam";
 export * from "./StockAvailable";
 export * from "./StockLimit";
 export * from "./Store";
+export * from "./Subscription";
 export * from "./Tag";
 export * from "./Token";
 export * from "./User";

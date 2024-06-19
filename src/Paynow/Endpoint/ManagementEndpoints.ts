@@ -5,6 +5,7 @@ import {
   OrderEndpoints,
   ProductEndpoints,
   StoreEndpoints,
+  SubscriptionEndpoints,
   TagEndpoints,
 } from ".";
 import { BaseEndpoint } from "../../lib";
@@ -17,6 +18,7 @@ export class ManagementEndpoints extends BaseEndpoint {
   private readonly __tags: TagEndpoints;
   private readonly __navlinks: NavlinkEndpoints;
   private readonly __orders: OrderEndpoints;
+  private readonly __subscriptions: SubscriptionEndpoints;
 
   constructor(store_id: string) {
     super(store_id);
@@ -27,6 +29,7 @@ export class ManagementEndpoints extends BaseEndpoint {
     this.__tags = new TagEndpoints(this._storeId);
     this.__navlinks = new NavlinkEndpoints(this._storeId);
     this.__orders = new OrderEndpoints(this._storeId);
+    this.__subscriptions = new SubscriptionEndpoints(this._storeId);
   }
 
   /** Store endpoints */
@@ -59,8 +62,13 @@ export class ManagementEndpoints extends BaseEndpoint {
     return this.__navlinks;
   }
 
-  /** Order endpoint */
+  /** Order endpoints */
   public get orders(): OrderEndpoints {
     return this.__orders;
+  }
+
+  /** Subscription endpoints */
+  public get subscriptions(): SubscriptionEndpoints {
+    return this.__subscriptions;
   }
 }
