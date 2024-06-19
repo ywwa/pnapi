@@ -41,3 +41,10 @@ export enum RevokeReason {
   REFUND = "refund",
   CHARGEBACK = "chargeback",
 }
+
+export enum Status {
+  CREATED = "created",
+  COMPLETED = "completed",
+  CANCELED = "canceled",
+  REFUNDED = "refunded",
+}

@@ -2,6 +2,7 @@ import {
   CustomerEndpoints,
   GameserverEndpoints,
   NavlinkEndpoints,
+  OrderEndpoints,
   ProductEndpoints,
   StoreEndpoints,
   TagEndpoints,
@@ -15,6 +16,7 @@ export class ManagementEndpoints extends BaseEndpoint {
   private readonly __products: ProductEndpoints;
   private readonly __tags: TagEndpoints;
   private readonly __navlinks: NavlinkEndpoints;
+  private readonly __orders: OrderEndpoints;
 
   constructor(store_id: string) {
     super(store_id);
@@ -24,6 +26,7 @@ export class ManagementEndpoints extends BaseEndpoint {
     this.__products = new ProductEndpoints(this._storeId);
     this.__tags = new TagEndpoints(this._storeId);
     this.__navlinks = new NavlinkEndpoints(this._storeId);
+    this.__orders = new OrderEndpoints(this._storeId);
   }
 
   /** Store endpoints */
@@ -54,5 +57,10 @@ export class ManagementEndpoints extends BaseEndpoint {
   /** Navlink Endpoints */
   public get navlinks(): NavlinkEndpoints {
     return this.__navlinks;
+  }
+
+  /** Order endpoint */
+  public get orders(): OrderEndpoints {
+    return this.__orders;
   }
 }

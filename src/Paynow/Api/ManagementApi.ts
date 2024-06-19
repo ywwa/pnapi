@@ -1,14 +1,15 @@
+import { BaseApi } from "../../lib";
+import { type ApiConfig } from "../../types";
+import { ManagementEndpoints } from "../Endpoint";
 import {
   CustomerApi,
   GameserverApi,
   NavlinkApi,
+  OrderApi,
   ProductApi,
   StoreApi,
   TagApi,
-} from ".";
-import { BaseApi } from "../../lib";
-import { type ApiConfig } from "../../types";
-import { ManagementEndpoints } from "../Endpoint";
+} from "./Management";
 
 export class ManagementApi extends BaseApi {
   private readonly __ep: ManagementEndpoints;
@@ -18,6 +19,7 @@ export class ManagementApi extends BaseApi {
   private readonly __product_api: ProductApi;
   private readonly __tag_api: TagApi;
   private readonly __navlink_api: NavlinkApi;
+  private readonly __order_api: OrderApi;
 
   constructor(config: ApiConfig) {
     super(config);
@@ -32,6 +34,7 @@ export class ManagementApi extends BaseApi {
     this.__product_api = new ProductApi(this._config, this.__ep.products);
     this.__tag_api = new TagApi(this._config, this.__ep.tags);
     this.__navlink_api = new NavlinkApi(this._config, this.__ep.navlinks);
+    this.__order_api = new OrderApi(this._config, this.__ep.orders);
   }
 
   /** Store API */
@@ -62,5 +65,10 @@ export class ManagementApi extends BaseApi {
   /** Navlink API */
   public get Navlinks(): NavlinkApi {
     return this.__navlink_api;
+  }
+
+  /** Order API */
+  public get Orders(): OrderApi {
+    return this.__order_api;
   }
 }
