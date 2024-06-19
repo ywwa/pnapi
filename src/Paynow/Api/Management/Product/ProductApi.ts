@@ -24,7 +24,7 @@ export class ProductApi extends BaseApi {
   }
 
   public async create(body: ProductRequestDTO): Promise<ProductResponseDTO> {
-    const schema: ZodSchema = z.object({
+    const schemaType = z.object({
       slug: z.optional(z.string().min(3).max(36)),
       name: z.string().min(1).max(42),
       description: z.string().min(1).max(50_000),
@@ -57,6 +57,41 @@ export class ProductApi extends BaseApi {
           .array(),
       ),
     });
+    type SchemaType = z.infer<typeof schemaType>;
+    const schema: ZodSchema = schemaType.refine(
+      (data) => {
+        const keys = Object.keys(data) as (keyof SchemaType)[];
+        return keys.some((key) => data[key] !== undefined);
+      },
+      {
+        message: "At least one field must be defined",
+        path: [
+          "slug",
+          "name",
+          "description",
+          "price",
+          "allow_one_time_purchase",
+          "allow_subscription",
+          "subscription_interval_value",
+          "subscription_interval_scale",
+          "remove_after_enabled",
+          "remove_after_time_value",
+          "remove_after_time_scale",
+          "store_stock_limit.enabled",
+          "store_stock_limit.quantity",
+          "store_stock_limit.time_value",
+          "store_stock_limit.time_scale",
+          "customer_stock_limit.enabled",
+          "customer_stock_limit.quantity",
+          "customer_stock_limit.time_value",
+          "customer_stock_limit.time_scale",
+          "stock_limit_do_not_include_removed",
+          "tags",
+          "gameservers",
+          "commands",
+        ],
+      },
+    );
 
     // I HONESTLY HAVE NOT A SINGLE IDEA IF THIS WILL WORK OR NOT
 
@@ -85,7 +120,7 @@ export class ProductApi extends BaseApi {
     product_id: string,
     body?: ProductUpdateRequestDTO,
   ): Promise<ProductResponseDTO> {
-    const schema: ZodSchema = z.object({
+    const schemaType = z.object({
       slug: z.optional(z.string().min(3).max(36)),
       name: z.optional(z.string().min(1).max(42)),
       description: z.optional(z.string().min(1).max(50_000)),
@@ -118,6 +153,41 @@ export class ProductApi extends BaseApi {
           .array(),
       ),
     });
+    type SchemaType = z.infer<typeof schemaType>;
+    const schema: ZodSchema = schemaType.refine(
+      (data) => {
+        const keys = Object.keys(data) as (keyof SchemaType)[];
+        return keys.some((key) => data[key] !== undefined);
+      },
+      {
+        message: "At least one field must be defined",
+        path: [
+          "slug",
+          "name",
+          "description",
+          "price",
+          "allow_one_time_purchase",
+          "allow_subscription",
+          "subscription_interval_value",
+          "subscription_interval_scale",
+          "remove_after_enabled",
+          "remove_after_time_value",
+          "remove_after_time_scale",
+          "store_stock_limit.enabled",
+          "store_stock_limit.quantity",
+          "store_stock_limit.time_value",
+          "store_stock_limit.time_scale",
+          "customer_stock_limit.enabled",
+          "customer_stock_limit.quantity",
+          "customer_stock_limit.time_value",
+          "customer_stock_limit.time_scale",
+          "stock_limit_do_not_include_removed",
+          "tags",
+          "gameservers",
+          "commands",
+        ],
+      },
+    );
 
     const options: RequestOptions = {
       url: this.__ep.by_id(product_id),

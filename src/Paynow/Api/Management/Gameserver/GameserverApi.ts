@@ -56,7 +56,7 @@ export class GameserverApi extends BaseApi {
         enabled: z.optional(z.boolean()),
       })
       .partial()
-      .refine((data) => data.name === undefined || data.enabled === undefined, {
+      .refine((data) => !data.name && !data.enabled, {
         message: "Either name or enabled must be provided",
         path: ["name", "enabled"],
       });
