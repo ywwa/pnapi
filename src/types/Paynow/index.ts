@@ -3,6 +3,7 @@ export * from "./Customer";
 export * from "./Gameserver";
 export * from "./Item";
 export * from "./Member";
+export * from "./Navlink";
 export * from "./Product";
 export * from "./Steam";
 export * from "./StockAvailable";
