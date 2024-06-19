@@ -1,6 +1,6 @@
 import { BaseEndpoint } from "../../../../lib";
 
-export class SaledEndpoints extends BaseEndpoint {
+export class SaleEndpoints extends BaseEndpoint {
   constructor(store_id: string) {
     super(store_id);
   }
