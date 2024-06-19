@@ -1,4 +1,4 @@
-import { CustomerApi, GameserverApi, ProductApi, StoreApi } from ".";
+import { CustomerApi, GameserverApi, ProductApi, StoreApi, TagApi } from ".";
 import { BaseApi } from "../../lib";
 import { type ApiConfig } from "../../types";
 import { ManagementEndpoints } from "../Endpoint";
@@ -9,6 +9,7 @@ export class ManagementApi extends BaseApi {
   private readonly __customer_api: CustomerApi;
   private readonly __gameserver_api: GameserverApi;
   private readonly __product_api: ProductApi;
+  private readonly __tag_api: TagApi;
 
   constructor(config: ApiConfig) {
     super(config);
@@ -21,6 +22,7 @@ export class ManagementApi extends BaseApi {
       this.__ep.gameservers,
     );
     this.__product_api = new ProductApi(this._config, this.__ep.products);
+    this.__tag_api = new TagApi(this._config, this.__ep.tags);
   }
 
   /** Store API */
@@ -41,5 +43,10 @@ export class ManagementApi extends BaseApi {
   /** Product API */
   public get Products(): ProductApi {
     return this.__product_api;
+  }
+
+  /** Tag API */
+  public get Tags(): TagApi {
+    return this.__tag_api;
   }
 }
