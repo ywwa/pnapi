@@ -27,7 +27,7 @@ export class ProductApi extends BaseApi {
     const schema: ZodSchema = z.object({
       slug: z.optional(z.string().min(3).max(36)),
       name: z.string().min(1).max(42),
-      description: z.string().min(1).max(10_000),
+      description: z.string().min(1).max(50_000),
       price: z.number().min(0).max(50_000_00),
       allow_one_time_purchase: z.optional(z.boolean()),
       allow_subscription: z.optional(z.boolean()),
@@ -88,7 +88,7 @@ export class ProductApi extends BaseApi {
     const schema: ZodSchema = z.object({
       slug: z.optional(z.string().min(3).max(36)),
       name: z.optional(z.string().min(1).max(42)),
-      description: z.optional(z.string().min(1).max(10_000)),
+      description: z.optional(z.string().min(1).max(50_000)),
       price: z.optional(z.number().min(0).max(50_000_00)),
       allow_one_time_purchase: z.optional(z.boolean()),
       allow_subscription: z.optional(z.boolean()),
