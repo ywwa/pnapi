@@ -3,6 +3,7 @@ import {
   GameserverEndpoints,
   ProductEndpoints,
   StoreEndpoints,
+  TagEndpoints,
 } from ".";
 import { BaseEndpoint } from "../../lib";
 
@@ -11,6 +12,7 @@ export class ManagementEndpoints extends BaseEndpoint {
   private readonly __customers: CustomerEndpoints;
   private readonly __gameservers: GameserverEndpoints;
   private readonly __products: ProductEndpoints;
+  private readonly __tags: TagEndpoints;
 
   constructor(store_id: string) {
     super(store_id);
@@ -18,6 +20,7 @@ export class ManagementEndpoints extends BaseEndpoint {
     this.__customers = new CustomerEndpoints(this._storeId);
     this.__gameservers = new GameserverEndpoints(this._storeId);
     this.__products = new ProductEndpoints(this._storeId);
+    this.__tags = new TagEndpoints(this._storeId);
   }
 
   /** Store endpoints */
@@ -38,5 +41,10 @@ export class ManagementEndpoints extends BaseEndpoint {
   /** Product endpoints */
   public get products(): ProductEndpoints {
     return this.__products;
+  }
+
+  /** Tag endpoints */
+  public get tags(): TagEndpoints {
+    return this.__tags;
   }
 }
