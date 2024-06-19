@@ -2,9 +2,11 @@ import {
   CouponEndpoints,
   CustomerEndpoints,
   GameserverEndpoints,
+  GiftcardEndpoints,
   NavlinkEndpoints,
   OrderEndpoints,
   ProductEndpoints,
+  SaledEndpoints,
   StoreEndpoints,
   SubscriptionEndpoints,
   TagEndpoints,
@@ -21,6 +23,8 @@ export class ManagementEndpoints extends BaseEndpoint {
   private readonly __orders: OrderEndpoints;
   private readonly __subscriptions: SubscriptionEndpoints;
   private readonly __coupons: CouponEndpoints;
+  private readonly __giftcards: GiftcardEndpoints;
+  private readonly __sales: SaledEndpoints;
 
   constructor(store_id: string) {
     super(store_id);
@@ -33,6 +37,8 @@ export class ManagementEndpoints extends BaseEndpoint {
     this.__orders = new OrderEndpoints(this._storeId);
     this.__subscriptions = new SubscriptionEndpoints(this._storeId);
     this.__coupons = new CouponEndpoints(this._storeId);
+    this.__giftcards = new GiftcardEndpoints(this._storeId);
+    this.__sales = new SaledEndpoints(this._storeId);
   }
 
   /** Store endpoints */
@@ -78,5 +84,15 @@ export class ManagementEndpoints extends BaseEndpoint {
   /** Coupon endpoints */
   public get coupons(): CouponEndpoints {
     return this.__coupons;
+  }
+
+  /** Giftcard endpoints */
+  public get giftcards(): GiftcardEndpoints {
+    return this.__giftcards;
+  }
+
+  /** Sale endpoints */
+  public get sales(): SaledEndpoints {
+    return this.__sales;
   }
 }
