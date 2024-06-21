@@ -1,7 +1,7 @@
 {
   "name": "@ywwa/pnapi",
-  "version": "0.0.4",
-  "description": "API Wrapper for Paynow service",
+  "version": "0.0.5",
+  "description": "API Wrapper for Paynow.gg ",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -14,10 +14,11 @@
   },
   "keywords": [
     "api",
-    "wrap",
     "wrapper",
     "paynow",
-    "axios"
+    "axios",
+    "async",
+    "paynow"
   ],
   "repository": {
     "type": "git",
