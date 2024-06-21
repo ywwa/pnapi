@@ -2,11 +2,14 @@ import { BaseApi } from "../../lib";
 import { type ApiConfig } from "../../types";
 import { ManagementEndpoints } from "../Endpoint";
 import {
+  CouponApi,
   CustomerApi,
   GameserverApi,
+  GiftcardApi,
   NavlinkApi,
   OrderApi,
   ProductApi,
+  SaleApi,
   StoreApi,
   SubscriptionApi,
   TagApi,
@@ -22,6 +25,9 @@ export class ManagementApi extends BaseApi {
   private readonly __navlink_api: NavlinkApi;
   private readonly __order_api: OrderApi;
   private readonly __subscription_api: SubscriptionApi;
+  private readonly __coupon_api: CouponApi;
+  private readonly __giftcard_api: GiftcardApi;
+  private readonly __sale_api: SaleApi;
 
   constructor(config: ApiConfig) {
     super(config);
@@ -81,5 +87,20 @@ export class ManagementApi extends BaseApi {
   /** Subscription API */
   public get Subscriptions(): SubscriptionApi {
     return this.__subscription_api;
+  }
+
+  /** Coupon API */
+  public get Coupon(): CouponApi {
+    return this.__coupon_api;
+  }
+
+  /** Giftcard API */
+  public get Giftcard(): GiftcardApi {
+    return this.__giftcard_api;
+  }
+
+  /** Sale API */
+  public get Sale(): SaleApi {
+    return this.__sale_api;
   }
 }

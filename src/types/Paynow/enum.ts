@@ -42,9 +42,16 @@ export enum RevokeReason {
   CHARGEBACK = "chargeback",
 }
 
+/** Status */
 export enum Status {
   CREATED = "created",
   COMPLETED = "completed",
   CANCELED = "canceled",
   REFUNDED = "refunded",
+}
+
+/** Discount Type */
+export enum Discount {
+  AMOUNT = "amount",
+  PERCENT = "percent",
 }
