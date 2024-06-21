@@ -18,5 +18,12 @@
     "noFallthroughCasesInSwitch": true,
     "removeComments": false
   },
-  "exclude": ["node_modules", "dist", "jest", "example"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "jest",
+    "example",
+    "coverage",
+    "__tests__"
+  ]
 }
