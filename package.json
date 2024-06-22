@@ -1,7 +1,7 @@
 {
   "name": "@ywwa/pnapi",
   "version": "0.0.7",
-  "description": "API Wrapper for Paynow.gg ",
+  "description": "API Wrapper for Paynow.gg",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "rm -rf ./dist && npm run build"
   },
   "keywords": [
     "api",
