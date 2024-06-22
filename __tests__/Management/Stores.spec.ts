@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { config } from "dotenv";
 import Paynow from "../../src";
 config();
@@ -14,5 +15,15 @@ describe("Management Store API", () => {
     const response = await store.get();
 
     expect(response).toHaveProperty("id", process.env.STORE_ID!);
+  });
+
+  it("Update Store data", async () => {
+    const storeName = faker.company.name();
+
+    const response = await store.update({
+      name: storeName,
+    });
+
+    expect(response.name).toBe(storeName);
   });
 });
