@@ -22,10 +22,10 @@ import Paynow from "@ywwa/pnapi";
 
 const client = new Paynow({ api_key: "", store_id: "" });
 
-(async () =>
+(async () => {
     // Obtain Store Object
     const store = await client.Management.Stores.get();
 
     console.log(store);
-{})();
+})();
 ```
