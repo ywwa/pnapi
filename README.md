@@ -20,15 +20,12 @@ npm install @ywwa/pnapi
 ```typescript
 import Paynow from "@ywwa/pnapi";
 
-const client = new Paynow({
-  api_key: "PAYNOW_API_KEY",
-  store_id: "STORE_ID",
-})(
-  // Obtain Store Object
-  async () => {
+const client = new Paynow({ api_key: "", store_id: "" });
+
+(async () =>
+    // Obtain Store Object
     const store = await client.Management.Stores.get();
 
     console.log(store);
-  },
-)();
+{})();
 ```
