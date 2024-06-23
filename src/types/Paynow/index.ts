@@ -1,6 +1,7 @@
 export * from "./Command";
 export * from "./Coupon";
 export * from "./Customer";
+export * from "./Dashboard";
 export * from "./Gameserver";
 export * from "./Giftcard";
 export * from "./Item";

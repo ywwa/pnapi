@@ -1,13 +1,15 @@
+import { MemberEndpoints, StatEndpoints } from ".";
 import { BaseEndpoint } from "../../../../lib";
-import { MemberEndpoints } from "./MemberEndpoints";
 
 export class StoreEndpoints extends BaseEndpoint {
   private readonly __member: MemberEndpoints;
+  private readonly __stat: StatEndpoints;
 
   constructor(store_id: string) {
     super(store_id);
 
     this.__member = new MemberEndpoints(this._storeId);
+    this.__stat = new StatEndpoints(this._storeId);
   }
 
   public base(): string {
@@ -20,5 +22,9 @@ export class StoreEndpoints extends BaseEndpoint {
 
   public get member(): MemberEndpoints {
     return this.__member;
+  }
+
+  public get stats(): StatEndpoints {
+    return this.__stat;
   }
 }
