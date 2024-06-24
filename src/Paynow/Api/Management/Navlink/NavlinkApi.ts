@@ -1,10 +1,10 @@
-import { z, type ZodSchema } from "zod";
 import {
   type NavlinkRequestDTO,
   type NavlinkResponseDTO,
 } from "../../../../dtos";
 import { BaseApi } from "../../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type ApiConfig, type RequestOptions } from "../../../../types";
+import { create, update } from "../../../../zschemas/navlink.zsc";
 import { type NavlinkEndpoints } from "../../../Endpoint";
 
 export class NavlinkApi extends BaseApi {
@@ -17,14 +17,10 @@ export class NavlinkApi extends BaseApi {
   }
 
   public async create(tag_id: string): Promise<NavlinkResponseDTO> {
-    const schema: ZodSchema = z.object({
-      tag_id: z.string(),
-    });
-
     const options: RequestOptions = {
       url: this.__ep.base(),
-      method: Method.POST,
-      data: { schema, content: { tag_id } },
+      method: "POST",
+      data: { schema: create, content: { tag_id } },
     };
 
     return this._execute<NavlinkResponseDTO>(options);
@@ -43,16 +39,10 @@ export class NavlinkApi extends BaseApi {
   public async updateOrder(
     body: NavlinkRequestDTO,
   ): Promise<NavlinkResponseDTO> {
-    const schema: ZodSchema = z.object({
-      parent_node_id: z.optional(z.string()),
-      tag_id: z.string(),
-      order: z.number(),
-    });
-
     const options: RequestOptions = {
       url: this.__ep.sort_orders(),
-      method: Method.PATCH,
-      data: { schema, content: body },
+      method: "PATCH",
+      data: { schema: update, content: body },
     };
     return this._execute<NavlinkResponseDTO>(options);
   }
@@ -60,7 +50,7 @@ export class NavlinkApi extends BaseApi {
   public async delete(node_id: string): Promise<void> {
     const options: RequestOptions = {
       url: this.__ep.by_id(node_id),
-      method: Method.DELETE,
+      method: "DELETE",
     };
 
     return this._execute<void>(options);

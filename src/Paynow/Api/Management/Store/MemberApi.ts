@@ -1,7 +1,7 @@
-import { z, type ZodSchema } from "zod";
 import { type MemberResponseDTO } from "../../../../dtos";
 import { BaseApi } from "../../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type ApiConfig, type RequestOptions } from "../../../../types";
+import { member_set_role } from "../../../../zschemas/store.zsc";
 import { type MemberEndpoints } from "../../../Endpoint";
 
 export class MemberApi extends BaseApi {
@@ -49,12 +49,10 @@ export class MemberApi extends BaseApi {
     user_id: string,
     role_id: string,
   ): Promise<MemberResponseDTO> {
-    const schema: ZodSchema = z.object({ role_id: z.string() });
-
     const options: RequestOptions = {
       url: this.__ep.set_role(user_id),
-      method: Method.POST,
-      data: { schema, content: { role_id } },
+      method: "POST",
+      data: { schema: member_set_role, content: { role_id } },
     };
 
     return this._execute<MemberResponseDTO>(options);

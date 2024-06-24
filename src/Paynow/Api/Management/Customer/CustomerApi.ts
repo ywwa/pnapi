@@ -1,12 +1,12 @@
-import { ZodIssueCode, z, type ZodSchema } from "zod";
 import { InventoryApi, TokenApi } from ".";
 import {
-  type CustomerLookupRequestDTO,
+  type CustomerLookupDTO,
   type CustomerRequestDTO,
   type CustomerResponseDTO,
 } from "../../../../dtos";
 import { BaseApi } from "../../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type ApiConfig, type RequestOptions } from "../../../../types";
+import { create_update, lookup } from "../../../../zschemas/customer.zsc";
 import { type CustomerEndpoints } from "../../../Endpoint";
 
 export class CustomerApi extends BaseApi {
@@ -30,27 +30,10 @@ export class CustomerApi extends BaseApi {
    * @return {CustomerResponseDTO} Customer
    */
   public async create(body?: CustomerRequestDTO): Promise<CustomerResponseDTO> {
-    const schema: ZodSchema = z.object({
-      steam_id: z.optional(z.string()),
-      name: z.optional(z.string().max(50)),
-      metadata: z.optional(
-        z
-          .record(z.string().max(40), z.string().max(500))
-          .superRefine((metadata, ctx) => {
-            if (Object.keys(metadata).length > 50) {
-              ctx.addIssue({
-                code: ZodIssueCode.custom,
-                message: "Metadata must not exceed 50 key-value pairs",
-              });
-            }
-          }),
-      ),
-    });
-
     const options: RequestOptions = {
       url: this.__ep.base(),
-      method: Method.POST,
-      ...(body && { data: { schema, content: body } }),
+      method: "POST",
+      ...(body && { data: { schema: create_update, content: body } }),
     };
 
     return this._execute<CustomerResponseDTO>(options);
@@ -74,23 +57,10 @@ export class CustomerApi extends BaseApi {
    *
    * @return {CustomerResponseDTO} Customer
    */
-  public async lookup(
-    params: CustomerLookupRequestDTO,
-  ): Promise<CustomerResponseDTO> {
-    const schema: ZodSchema = z
-      .object({
-        id: z.string(),
-        steam_id: z.string(),
-      })
-      .partial()
-      .refine(
-        (data) => !!data.id || !!data.steam_id,
-        "Either id or steam_id must be specified",
-      );
-
+  public async lookup(params: CustomerLookupDTO): Promise<CustomerResponseDTO> {
     const options: RequestOptions = {
       url: this.__ep.lookup(),
-      search: { schema, content: params },
+      search: { schema: lookup, content: params },
     };
 
     return this._execute<CustomerResponseDTO>(options);
@@ -122,27 +92,10 @@ export class CustomerApi extends BaseApi {
     customer_id: string,
     body?: CustomerRequestDTO,
   ): Promise<CustomerResponseDTO> {
-    const schema: ZodSchema = z.object({
-      steam_id: z.optional(z.string()),
-      name: z.optional(z.string().max(50)),
-      metadata: z.optional(
-        z
-          .record(z.string().max(40), z.string().max(500))
-          .superRefine((metadata, ctx) => {
-            if (Object.keys(metadata).length > 50) {
-              ctx.addIssue({
-                code: ZodIssueCode.custom,
-                message: "Metadata must not exceed 50 key-value pairs",
-              });
-            }
-          }),
-      ),
-    });
-
     const options: RequestOptions = {
       url: this.__ep.by_id(customer_id),
-      method: Method.PATCH,
-      ...(body && { data: { schema, content: body } }),
+      method: "PATCH",
+      ...(body && { data: { schema: create_update, content: body } }),
     };
 
     return this._execute<CustomerResponseDTO>(options);

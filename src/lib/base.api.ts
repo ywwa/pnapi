@@ -1,8 +1,7 @@
 import axios, { type AxiosRequestConfig } from "axios";
 import { type Schema } from "zod";
 import {
-  Auth,
-  Method,
+  Auths,
   type ApiConfig,
   type ApiRequestOptions,
   type HeaderOptions,
@@ -31,16 +30,17 @@ export abstract class BaseApi {
     const { auth, additional } = options;
 
     switch (auth.type) {
-      case Auth.API:
-        if (auth.key) headers["Authorization"] = `${Auth.API} ${auth.key}`;
+      case Auths.User:
+        if (auth.key) headers["Authorization"] = `${Auths.User} ${auth.key}`;
         break;
-      case Auth.CUSTOMER:
-        if (auth.key) headers["Authorization"] = `${Auth.CUSTOMER} ${auth.key}`;
+      case Auths.Api:
+        if (auth.key) headers["Authorization"] = `${Auths.Api} ${auth.key}`;
         break;
-      case Auth.USER:
-        if (auth.key) headers["Authorization"] = `${Auth.USER} ${auth.key}`;
+      case Auths.Customer:
+        if (auth.key)
+          headers["Authorization"] = `${Auths.Customer} ${auth.key}`;
         break;
-      case Auth.ANONYMOUS:
+      case Auths.Anonymous:
         break;
     }
 
@@ -134,8 +134,8 @@ export abstract class BaseApi {
    */
   protected async _execute<T>({
     url,
-    headers = { auth: { type: Auth.API, key: this._config.api_key } },
-    method = Method.GET,
+    headers = { auth: { type: "apikey", key: this._config.api_key } },
+    method = "GET",
     data,
     search,
   }: RequestOptions): Promise<T> {

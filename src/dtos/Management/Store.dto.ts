@@ -2,36 +2,39 @@ import { type Dashboard, type Member, type Store } from "../../types";
 
 export interface StoreResponseDTO extends Store {}
 
-export interface StoreUpdateRequestDTO
-  extends Partial<Pick<Store, "slug" | "name">> {}
+export interface StoreCreateDTO
+  extends Pick<Store, "name" | "slug" | "game" | "currency" | "description"> {}
+
+export interface StoreUpdateDTO extends Partial<Pick<Store, "slug" | "name">> {}
 
 export interface MemberResponseDTO extends Member {}
 
 export interface DashboardResponseDTO extends Dashboard {}
+
 export interface DashboardRequestDTO {
   /** timezone */
   tz: string;
 }
 
-export interface OrderRequestDTO {
+export interface StatOrderRequestDTO {
   start: Date;
   end: Date;
   tz?: string;
 }
-export interface OrderResponseDTO {
+export interface StatOrderResponseDTO {
   day: Date;
   total: number;
   total_orders: number;
 }
 
-export interface ProductRequestDTO {
+export interface StatProductRequestDTO {
   start: Date;
   end: Date;
   tz?: string;
   limit?: number;
 }
 
-export interface ProductResponseDTO {
+export interface StatProductResponseDTO {
   store_id: string;
   product_id: string;
   total_lines: number;

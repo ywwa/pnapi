@@ -10,13 +10,15 @@ export type ApiConfig = ClientConfig & {
   customer_countrycode?: string;
 };
 
-export enum Auth {
-  API = "apikey",
-  CUSTOMER = "customer",
-  ANONYMOUS = "anonymous",
+export const Auths = {
   /** UNDOCUMENTED */
-  USER = "User",
-}
+  User: "User",
+  Api: "apikey",
+  Customer: "customer",
+  Anonymous: "anonymous",
+} as const;
+
+export type Auth = (typeof Auths)[keyof typeof Auths];
 
 export type AuthOptions = {
   type?: Auth;
@@ -28,12 +30,15 @@ export interface HeaderOptions {
   additional?: Record<string, string>;
 }
 
-export enum Method {
-  GET = "GET",
-  POST = "POST",
-  PATCH = "PATCH",
-  DELETE = "DELETE",
-}
+/** Supported HTTP Methods */
+export const Methods = {
+  Get: "GET",
+  Post: "POST",
+  Patch: "PATCH",
+  Delete: "DELETE",
+} as const;
+
+export type Method = (typeof Methods)[keyof typeof Methods];
 
 export interface Options {
   url: string;
@@ -41,18 +46,16 @@ export interface Options {
   headers?: HeaderOptions;
   data?: Record<string, any>;
   search?: Record<string, any>;
-  // search?: URLSearchParams | string;
 }
 
+type ValidationParams = {
+  schema: ZodSchema;
+  content: Record<string, any>;
+};
+
 export interface RequestOptions extends Omit<Options, "data" | "search"> {
-  data?: {
-    schema: ZodSchema;
-    content: Record<string, any>;
-  };
-  search?: {
-    schema: ZodSchema;
-    content: Record<string, any>;
-  };
+  data?: ValidationParams;
+  search?: ValidationParams;
 }
 
 export interface ApiRequestOptions extends Omit<Options, "headers"> {

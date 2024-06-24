@@ -10,7 +10,7 @@ export interface CustomerResponseDTO extends Customer {}
 export interface CustomerRequestDTO
   extends Partial<Pick<Customer, "steam_id" | "name" | "metadata">> {}
 
-export interface CustomerLookupRequestDTO
+export interface CustomerLookupDTO
   extends Partial<Pick<Customer, "id" | "steam_id">> {}
 
 export interface TokenResponseDTO extends Token {}

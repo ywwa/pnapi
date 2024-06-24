@@ -1,11 +1,11 @@
-import { z, type ZodSchema } from "zod";
 import {
   type GameserverRequestDTO,
   type GameserverResponseDTO,
   type GameserverUpdateRequestDTO,
 } from "../../../../dtos";
 import { BaseApi } from "../../../../lib";
-import { Method, type ApiConfig, type RequestOptions } from "../../../../types";
+import { type ApiConfig, type RequestOptions } from "../../../../types";
+import { create, update } from "../../../../zschemas/gameserver.zsc";
 import { type GameserverEndpoints } from "../../../Endpoint";
 
 export class GameserverApi extends BaseApi {
@@ -20,15 +20,10 @@ export class GameserverApi extends BaseApi {
   public async create(
     body: GameserverRequestDTO,
   ): Promise<GameserverResponseDTO> {
-    const schema: ZodSchema = z.object({
-      name: z.string().max(128),
-      enabled: z.boolean(),
-    });
-
     const options: RequestOptions = {
       url: this.__ep.base(),
-      method: Method.POST,
-      data: { schema, content: body },
+      method: "POST",
+      data: { schema: create, content: body },
     };
 
     return this._execute<GameserverResponseDTO>(options);
@@ -50,21 +45,10 @@ export class GameserverApi extends BaseApi {
     gameserver_id: string,
     body: GameserverUpdateRequestDTO,
   ): Promise<GameserverResponseDTO> {
-    const schema: ZodSchema = z
-      .object({
-        name: z.optional(z.string().max(128)),
-        enabled: z.optional(z.boolean()),
-      })
-      .partial()
-      .refine((data) => !data.name && !data.enabled, {
-        message: "Either name or enabled must be provided",
-        path: ["name", "enabled"],
-      });
-
     const options: RequestOptions = {
       url: this.__ep.by_id(gameserver_id),
-      method: Method.PATCH,
-      data: { schema, content: body },
+      method: "PATCH",
+      data: { schema: update, content: body },
     };
 
     return this._execute<GameserverResponseDTO>(options);
@@ -75,7 +59,7 @@ export class GameserverApi extends BaseApi {
   ): Promise<GameserverResponseDTO> {
     const options: RequestOptions = {
       url: this.__ep.by_id(gameserver_id),
-      method: Method.POST,
+      method: "POST",
     };
 
     return this._execute<GameserverResponseDTO>(options);
