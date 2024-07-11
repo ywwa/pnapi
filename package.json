@@ -1,6 +1,6 @@
 {
   "name": "@ywwa/pnapi",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "API Wrapper for Paynow.gg",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,6 +9,7 @@
     "lint:fix": "eslint --fixt ./src/**/*",
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "example": "ts-node ./example/index.ts",
     "build": "tsc",
     "prepublishOnly": "rm -rf ./dist && npm run build"
   },
@@ -42,6 +43,7 @@
     "prettier": "^3.3.2",
     "prettier-plugin-organize-imports": "^3.2.4",
     "ts-jest": "^29.1.5",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {

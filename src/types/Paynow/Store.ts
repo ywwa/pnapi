@@ -15,7 +15,7 @@ export type Store = {
   /** Currency of the store */
   currency: Currency;
   /** Description of the store */
-  description: string;
+  description?: string;
   /** The date this store was created */
   created_at: Date;
   /** URL to the logo of the store */

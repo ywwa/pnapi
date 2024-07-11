@@ -1,63 +1,55 @@
 import { type ZodSchema } from "zod";
 
-export type ClientConfig = {
-  api_key: string;
-  store_id: string;
-};
+export type ClientConfig = { auth: Auth; store_id?: string };
 
-export type ApiConfig = ClientConfig & {
-  customer_ip?: string;
-  customer_countrycode?: string;
-};
+export type ApiConfig = ClientConfig & {};
 
-export const Auths = {
-  /** UNDOCUMENTED */
-  User: "User",
+export const Access = {
+  User: "user",
   Api: "apikey",
   Customer: "customer",
+  Gameserver: "gameserver",
   Anonymous: "anonymous",
 } as const;
 
-export type Auth = (typeof Auths)[keyof typeof Auths];
+export type Access = (typeof Access)[keyof typeof Access];
 
-export type AuthOptions = {
-  type?: Auth;
-  key?: string;
+type Auth = { type: Access; key?: string };
+
+export type HeaderOptions = {
+  auth: Auth;
+  additional?: Record<string, string>;
 };
 
-export interface HeaderOptions {
-  auth: AuthOptions;
-  additional?: Record<string, string>;
-}
-
 /** Supported HTTP Methods */
-export const Methods = {
+export const Method = {
   Get: "GET",
   Post: "POST",
   Patch: "PATCH",
   Delete: "DELETE",
 } as const;
 
-export type Method = (typeof Methods)[keyof typeof Methods];
+export type Method = (typeof Method)[keyof typeof Method];
 
-export interface Options {
+type Options = {
   url: string;
   method?: Method;
   headers?: HeaderOptions;
   data?: Record<string, any>;
   search?: Record<string, any>;
-}
-
-type ValidationParams = {
-  schema: ZodSchema;
-  content: Record<string, any>;
 };
 
-export interface RequestOptions extends Omit<Options, "data" | "search"> {
-  data?: ValidationParams;
-  search?: ValidationParams;
-}
-
-export interface ApiRequestOptions extends Omit<Options, "headers"> {
+export type ApiRequestOptions = Omit<Options, "headers"> & {
   headers: Record<string, string>;
-}
+};
+
+type ValidationOptions = {
+  schema: ZodSchema;
+  params: Record<string, any>;
+};
+
+export type RequestOptions = Omit<Options, "data" | "search"> & {
+  data?: ValidationOptions;
+  search?: ValidationOptions;
+  response?: ZodSchema;
+};

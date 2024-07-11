@@ -1,0 +1,67 @@
+import { z, type ZodSchema } from "zod";
+import {
+  CurrencyEnum,
+  ScaleEnum,
+  StatusEnum,
+  dateSchema,
+} from "../shared.schema";
+import { customerResponseSchema } from "./Customers.schema";
+
+export const subscriptionResponseSchema: ZodSchema = z.object({
+  id: z.string(),
+  pretty_id: z.string(),
+  store_id: z.string(),
+  customer: customerResponseSchema,
+  status: StatusEnum,
+  checkout_id: z.string().nullable(),
+  checkout_line_id: z.string().nullable(),
+  billing_name: z.string().nullable(),
+  billing_email: z.string().nullable(),
+  billing_country: z.string().nullable(),
+  customer_ip: z.string().nullable(),
+  gift: z.boolean(),
+  gift_to_customer: customerResponseSchema.nullable(),
+  product_id: z.string(),
+  product_version_id: z.string(),
+  product_name: z.string(),
+  product_image_url: z.string().nullable(),
+  interval_value: z.number(),
+  interval_scale: ScaleEnum,
+  currency: CurrencyEnum,
+  tax_inclusive: z.boolean(),
+  price: z.number(),
+  price_str: z.string(),
+  discount_amount: z.number(),
+  discount_amount_str: z.string(),
+  subtotal_amount: z.number(),
+  subtotal_amount_str: z.string(),
+  tax_amount: z.number(),
+  tax_amount_str: z.string(),
+  total_amount: z.number(),
+  total_amount_str: z.string(),
+  initial_discount_amount: z.number(),
+  initial_discount_amount_str: z.string(),
+  initial_subtotal_amount: z.number(),
+  initial_subtotal_amount_str: z.string(),
+  initial_giftcard_usage_amount: z.number(),
+  initial_giftcard_usage_amount_str: z.string(),
+  initial_tax_amount: z.number(),
+  initial_tax_amount_str: z.string(),
+  current_period_start: dateSchema,
+  current_period_end: dateSchema,
+  billing_cycle_sequence: z.number(),
+  created_at: dateSchema,
+  updated_at: dateSchema.nullable(),
+  active_at: dateSchema,
+  canceled_at: dateSchema.nullable(),
+  cancel_reason: z.string().nullable(),
+});
+
+export const subscriptionLookupSchema: ZodSchema = z
+  .object({
+    customer_id: z.string(),
+    limit: z.number(),
+    after: z.string(),
+    before: z.string(),
+  })
+  .partial();

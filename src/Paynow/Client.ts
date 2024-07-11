@@ -1,17 +1,20 @@
-import { type ClientConfig } from "../types";
-import { ManagementApi } from "./Api";
+import { ManagementApi } from ".";
+import { type ClientConfig } from "..";
 
-export class Paynow {
-  private readonly config: ClientConfig;
-  private readonly __management: ManagementApi;
+class Client {
+  private __config: ClientConfig;
+  private __management_api: ManagementApi;
 
-  constructor(config: ClientConfig) {
-    this.config = config;
-
-    this.__management = new ManagementApi(this.config);
+  public set config(config: ClientConfig) {
+    this.__config = config;
   }
 
   public get Management(): ManagementApi {
-    return this.__management;
+    if (!this.__management_api) {
+      this.__management_api = new ManagementApi(this.__config);
+    }
+    return this.__management_api;
   }
 }
+
+export default Client;

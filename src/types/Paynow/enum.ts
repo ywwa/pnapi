@@ -1,5 +1,5 @@
 /** Supported Games */
-export const Games = {
+export const Game = {
   /** Rust */
   Rust: "rust",
   /** Garry's Mod */
@@ -14,10 +14,10 @@ export const Games = {
   Other: "other",
 } as const;
 
-export type Game = (typeof Games)[keyof typeof Games];
+export type Game = (typeof Game)[keyof typeof Game];
 
 /** Suppoerted Currencies */
-export const Currencies = {
+export const Currency = {
   /** U.S. Dollar */
   USD: "usd",
   /** Euro */
@@ -26,20 +26,20 @@ export const Currencies = {
   GBP: "gbp",
 } as const;
 
-export type Currency = (typeof Currencies)[keyof typeof Currencies];
+export type Currency = (typeof Currency)[keyof typeof Currency];
 
 /** Scale */
-export const Scales = {
+export const Scale = {
   Day: "day",
   Week: "week",
   Month: "month",
   Year: "year",
 } as const;
 
-export type Scale = (typeof Scales)[keyof typeof Scales];
+export type Scale = (typeof Scale)[keyof typeof Scale];
 
 /** Stage */
-export const Stages = {
+export const Stage = {
   Purchase: "on_purchase",
   Expire: "on_expire",
   Renew: "on_renew",
@@ -47,41 +47,41 @@ export const Stages = {
   Chargeback: "on_chargeback",
 };
 
-export type Stage = (typeof Stages)[keyof typeof Stages];
+export type Stage = (typeof Stage)[keyof typeof Stage];
 
 /** State */
-export const States = {
+export const State = {
   Usable: "usable",
   Active: "active",
   Used: "used",
   Revoked: "revoked",
 } as const;
 
-export type State = (typeof States)[keyof typeof States];
+export type State = (typeof State)[keyof typeof State];
 
 /** Revoke Reason */
-export const RevokeReasons = {
+export const RevokeReason = {
   Admin: "admin",
   Refund: "refund",
   Chargeback: "chargeback",
 } as const;
 
-export type RevokeReason = (typeof RevokeReasons)[keyof typeof RevokeReasons];
+export type RevokeReason = (typeof RevokeReason)[keyof typeof RevokeReason];
 
 /** Status */
-export const Statuses = {
+export const Status = {
   Created: "created",
   Completed: "completed",
   Canceled: "canceled",
   Refunded: "refunded",
 } as const;
 
-export type Status = (typeof Statuses)[keyof typeof Statuses];
+export type Status = (typeof Status)[keyof typeof Status];
 
 /** Discount Type */
-export const Discounts = {
+export const Discount = {
   Amount: "amount",
   Percent: "percent",
 } as const;
 
-export type Discount = (typeof Discounts)[keyof typeof Discounts];
+export type Discount = (typeof Discount)[keyof typeof Discount];

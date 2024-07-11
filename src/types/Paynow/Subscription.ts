@@ -50,5 +50,5 @@ export type Subscription = {
   updated_at?: Date;
   active_at: Date;
   canceled_at?: Date;
-  cancel_reason?: string; // TODO:
+  cancel_reason?: string; // TODO: is this enum or what
 };

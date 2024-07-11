@@ -6,10 +6,10 @@ export type Giftcard = {
   store_id: string;
   enabled: boolean;
   code: string;
-  note?: string;
+  note: string;
   balance: number;
   starting_balance: number;
-  usabe_at: Date;
+  usable_at: Date;
   expires_at?: Date;
   created_by: Pick<User, "id" | "first_name" | "last_name">;
   created_at: Date;
