@@ -18,14 +18,22 @@ npm install @ywwa/pnapi
 ## Simple usage example
 
 ```typescript
-import Paynow from "@ywwa/pnapi";
+import { config } from "dotenv";
+import Paynow from "../src";
 
-const client = new Paynow({ api_key: "", store_id: "" });
+config();
 
-(async () => {
-    // Obtain Store Object
-    const store = await client.Management.Stores.get();
+const main = async () => {
+  const client = new Paynow();
+  client.config = {
+    auth: { type: "apikey", key: process.env.API_KEY },
+    store_id: process.env.STORE_ID,
+  };
 
-    console.log(store);
-})();
+  const store = await client.Management.Stores.get();
+
+  console.log(store);
+};
+
+main();
 ```
