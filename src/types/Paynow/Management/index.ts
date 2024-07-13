@@ -1,7 +1,9 @@
+import { type Customer as ManagementCustomer } from "./Customer";
+import { type Minecraft as ManagementMinecraft } from "./Minecraft";
+import { type Steam as ManagementSteam } from "./Steam";
 import { type Store as ManagementStore } from "./Store";
 export * from "./Command";
 export * from "./Coupon";
-export * from "./Customer";
 export * from "./Dashboard";
 export * from "./Gameserver";
 export * from "./Giftcard";
@@ -12,11 +14,16 @@ export * from "./Navlink";
 export * from "./Order";
 export * from "./Product";
 export * from "./Sale";
-export * from "./Steam";
 export * from "./StockAvailable";
 export * from "./StockLimit";
 export * from "./Subscription";
 export * from "./Tag";
 export * from "./Token";
 export * from "./User";
-export { ManagementStore };
+
+export {
+  ManagementCustomer,
+  ManagementMinecraft,
+  ManagementSteam,
+  ManagementStore,
+};

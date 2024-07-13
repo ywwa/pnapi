@@ -1,12 +1,17 @@
-import { Product, type Customer, type Item, type Token } from "../../types";
+import {
+  Product,
+  type Item,
+  type ManagementCustomer,
+  type Token,
+} from "../../types";
 
-export interface CustomerResponseDTO extends Customer {}
+export interface CustomerResponseDTO extends ManagementCustomer {}
 
 export interface CustomerCreateDTO
-  extends Partial<Pick<Customer, "steam_id" | "name" | "metadata">> {}
+  extends Partial<Pick<ManagementCustomer, "steam_id" | "name" | "metadata">> {}
 
 export interface CustomerLookupDTO
-  extends Partial<Pick<Customer, "id" | "steam_id">> {}
+  extends Partial<Pick<ManagementCustomer, "id" | "steam_id">> {}
 
 export interface CustomerUpdateDTO extends CustomerCreateDTO {}
 

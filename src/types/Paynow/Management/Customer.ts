@@ -1,4 +1,4 @@
-import { type Steam, type User } from ".";
+import { type ManagementMinecraft, type ManagementSteam, type User } from ".";
 
 /** Customer Object */
 export type Customer = {
@@ -9,11 +9,11 @@ export type Customer = {
   /** Steam id */
   steam_id?: string;
   /** Steam Object */
-  steam?: Steam;
+  steam?: ManagementSteam;
   /** UUID of Minecraft Account */
   minecraft_uuid?: string;
   /** ??? */
-  minecraft?: any;
+  minecraft?: ManagementMinecraft;
   /** Name of the customer */
   name?: string;
   /** Metadata of the customer */
