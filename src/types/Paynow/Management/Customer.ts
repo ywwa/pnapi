@@ -10,6 +10,10 @@ export type Customer = {
   steam_id?: string;
   /** Steam Object */
   steam?: Steam;
+  /** UUID of Minecraft Account */
+  minecraft_uuid?: string;
+  /** ??? */
+  minecraft?: any;
   /** Name of the customer */
   name?: string;
   /** Metadata of the customer */

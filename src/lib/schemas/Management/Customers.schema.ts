@@ -1,4 +1,5 @@
 import {
+  any,
   boolean,
   number,
   object,
@@ -20,6 +21,8 @@ export const customerResponseSchema: ZodSchema = object({
   store_id: string(),
   steam_id: string().nullable(),
   steam: steamSchema.nullable(),
+  minecraft_uuid: string().nullable(),
+  minecraft: any().nullable(), // TODO: gather information
   name: string().nullable(),
   metadata: Metadata.nullable(),
   created_by: userSchema.nullable().optional(),
