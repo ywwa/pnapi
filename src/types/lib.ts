@@ -30,6 +30,7 @@ export type HeaderOptions = {
 export const Method = {
   Get: "GET",
   Post: "POST",
+  Put: "PUT",
   Patch: "PATCH",
   Delete: "DELETE",
 } as const;

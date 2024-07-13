@@ -11,7 +11,6 @@ const main = async () => {
   };
 
   const store = await client.Management.Stores.get();
-
   console.log(store);
 };
 

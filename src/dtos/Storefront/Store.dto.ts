@@ -1,5 +1,3 @@
-import { type Store } from "../../types/Paynow/Storefront";
+import { type StorefrontStore } from "../../types";
 
-interface StoreDTO extends Store {}
-
-export interface StoreResponseDTO extends StoreDTO {}
+export interface StoreResponseDTO extends StorefrontStore {}

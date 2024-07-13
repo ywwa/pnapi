@@ -68,6 +68,12 @@ export const steamSchema = object({
   avatar_url: string(),
 });
 
+export const minecraftSchema = object({
+  id: string(),
+  name: string(),
+  avatar_url: string(),
+});
+
 export const memberSchema = object({
   user: userSchema,
   role_id: string(),
