@@ -1,4 +1,4 @@
-import { type Customer } from ".";
+import { type ManagementCustomer } from ".";
 import { type Currency, type Scale, type Status } from "../enum";
 
 /** Subscription Object */
@@ -6,7 +6,7 @@ export type Subscription = {
   id: string;
   pretty_id: string;
   store_id: string;
-  customer: Omit<Customer, "created_by" | "updated_by">;
+  customer: Omit<ManagementCustomer, "created_by" | "updated_by">;
   status: Status;
   checkout_id: string;
   checkout_line_id: string;
@@ -15,7 +15,7 @@ export type Subscription = {
   billing_country?: string;
   customer_ip?: string;
   gift: boolean;
-  gift_to_customer?: Omit<Customer, "created_by" | "updated_by">;
+  gift_to_customer?: Omit<ManagementCustomer, "created_by" | "updated_by">;
   product_id: string;
   product_version_id: string;
   product_name: string;

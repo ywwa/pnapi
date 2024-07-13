@@ -1,4 +1,4 @@
-import { type Customer, type Line } from ".";
+import { type ManagementCustomer, type Line } from ".";
 import { type Status } from "../enum";
 
 /** Order Object */
@@ -6,7 +6,7 @@ export type Order = {
   id: string;
   pretty_id: string;
   store_id: string;
-  customer: Omit<Customer, "created_by" | "updated_by">;
+  customer: Omit<ManagementCustomer, "created_by" | "updated_by">;
   status: Status;
   checkout_id?: string;
   subscription_id?: string;

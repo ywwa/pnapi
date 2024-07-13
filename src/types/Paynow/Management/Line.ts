@@ -1,4 +1,4 @@
-import { type Customer } from ".";
+import { type ManagementCustomer } from ".";
 import { type Scale } from "../enum";
 
 /** Line Object */
@@ -12,7 +12,7 @@ export type Line = {
   subscription_interval_value: number;
   subscription_interval_scale: Scale;
   gift: boolean;
-  gift_to_customer?: Customer; // could be omited!!!
+  gift_to_customer?: ManagementCustomer; // could be omited!!!
   selected_gameserver_id?: string;
   price: number;
   price_str: string;

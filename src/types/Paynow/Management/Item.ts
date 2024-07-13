@@ -1,11 +1,11 @@
-import { type Customer, type Product, type User } from ".";
+import { type ManagementCustomer, type Product, type User } from ".";
 import { type RevokeReason, type State } from "../enum";
 
 export type Item = {
   id: string;
   store_id: string;
-  customer: Omit<Customer, "created_by" | "updated_by">;
-  order_customer: Omit<Customer, "created_by" | "updated_by">;
+  customer: Omit<ManagementCustomer, "created_by" | "updated_by">;
+  order_customer: Omit<ManagementCustomer, "created_by" | "updated_by">;
   subscription_id?: string;
   checkout_id?: string;
   order_id?: string;

@@ -1,4 +1,4 @@
-import { type Customer, type Product, type Tag, type User } from ".";
+import { type ManagementCustomer, type Product, type Tag, type User } from ".";
 
 /** Coupon object */
 export type Coupon = {
@@ -25,7 +25,7 @@ export type Coupon = {
   discount_amount: number;
   discount_apply_individually: boolean;
   discount_apply_before_sales: boolean;
-  usable_by_customer: Omit<Customer, "created_by" | "updated_by">; // undomumented?
+  usable_by_customer: Omit<ManagementCustomer, "created_by" | "updated_by">; // undomumented?
   minimum_order_value: number;
   redeem_limit_store_enabled: boolean;
   redeem_limit_store_amount: number;
