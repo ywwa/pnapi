@@ -1,6 +1,11 @@
 import { type ZodSchema } from "zod";
 
-export type ClientConfig = { auth: Auth; store_id?: string };
+export type CustomerMeta = {
+  customer_ip?: string;
+  customer_country_code?: string;
+};
+
+export type ClientConfig = { auth: Auth; store_id?: string } & CustomerMeta;
 
 export type ApiConfig = ClientConfig & {};
 
@@ -14,7 +19,7 @@ export const Access = {
 
 export type Access = (typeof Access)[keyof typeof Access];
 
-type Auth = { type: Access; key?: string };
+export type Auth = { type: Access; key?: string };
 
 export type HeaderOptions = {
   auth: Auth;

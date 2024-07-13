@@ -92,6 +92,42 @@ export abstract class Api {
   }
 
   /**
+   * Constructs additional headers required for the API request.
+   *
+   * This method ensures that the `store_id` is present in the configuration.
+   * It also validates that either `customer_ip` or `customer_country_code` is provided.
+   * If these conditions are not met, an error is thrown.
+   *
+   * The constructed headers include the `store-id` and, if available,
+   * the `customer-ip` and `customer-countrycode`.
+   *
+   * @protected
+   * @param {ApiConfig} config - The configuration object containing necessary properties.
+   * @returns {Record<string, string>} The constructed headers object.
+   * @throws {Error} If `store_id` is missing or neither `customer_ip` nor `customer_country_code` is provided.
+   */
+  protected _construct_additional_headers(
+    config: ApiConfig,
+  ): Record<string, string> {
+    if (!config.store_id) throw new Error("ERROR: Missing store_id");
+
+    if (!config.customer_ip && !config.customer_country_code)
+      throw new Error(
+        "Error: Either customer ip or country code most be provided",
+      );
+
+    const headers: { [key: string]: string } = {
+      "store-id": config.store_id,
+    };
+
+    if (config.customer_ip) headers["customer-ip"] = config.customer_ip;
+    if (config.customer_country_code)
+      headers["customer-countrycode"] = config.customer_country_code;
+
+    return headers;
+  }
+
+  /**
    * Validates data using Zod schema.
    * @template T - The type of data to validate.
    * @param {Schema<T>} schema - Zod schema for validation.
