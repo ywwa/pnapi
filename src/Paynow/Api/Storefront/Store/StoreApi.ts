@@ -1,3 +1,4 @@
+import { type StoreResponseDTO } from "../../../../dtos/Storefront";
 import { Api } from "../../../../lib";
 import { type ApiConfig, type RequestOptions } from "../../../../types";
 import { type StoreEndpoints } from "../../../Endpoint";
@@ -10,7 +11,7 @@ export class StoreApi extends Api {
     this.__endpoints = endpoints;
   }
 
-  async get() {
+  async get(): Promise<StoreResponseDTO> {
     try {
       this._check_auth(["anonymous", "customer"]);
       const options: RequestOptions = {

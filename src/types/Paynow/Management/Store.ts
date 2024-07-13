@@ -1,4 +1,5 @@
-import { type Currency, type Game, type Member, type User } from ".";
+import { type Member, type User } from ".";
+import { type Currency, type Game } from "../enum";
 
 /** Store object */
 export type Store = {

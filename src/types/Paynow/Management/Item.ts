@@ -1,10 +1,5 @@
-import {
-  type Customer,
-  type Product,
-  type RevokeReason,
-  type State,
-  type User,
-} from ".";
+import { type Customer, type Product, type User } from ".";
+import { type RevokeReason, type State } from "../enum";
 
 export type Item = {
   id: string;

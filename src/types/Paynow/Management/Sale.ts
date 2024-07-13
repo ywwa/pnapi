@@ -1,4 +1,5 @@
-import { type Discount, type Product, type Tag, type User } from ".";
+import { type Product, type Tag, type User } from ".";
+import { type Discount } from "../enum";
 
 /** Sale Object */
 export type Sale = {

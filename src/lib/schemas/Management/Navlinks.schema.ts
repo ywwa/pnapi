@@ -1,23 +1,22 @@
-import { z, type ZodSchema } from "zod";
+import { number, object, string, type ZodSchema } from "zod";
 
-export const navlinkResponseSchema: ZodSchema = z.object({
-  node_id: z.string(),
-  parent_node_id: z.string().nullable(),
-  store_id: z.string(),
-  tag_id: z.string(),
-  tag_slug: z.string(),
-  name: z.string(),
-  order: z.number(),
+export const navlinkResponseSchema: ZodSchema = object({
+  node_id: string(),
+  parent_node_id: string().nullable(),
+  store_id: string(),
+  tag_id: string(),
+  tag_slug: string(),
+  name: string(),
+  order: number(),
 });
 
-export const navlinkCreateSchema: ZodSchema = z.object({ tag_id: z.string() });
+export const navlinkCreateSchema: ZodSchema = object({ tag_id: string() });
 
-export const navlinkUpdateSchema: ZodSchema = z
-  .object({
-    parent_node_id: z.string(),
-    tag_id: z.string(),
-    order: z.number(),
-  })
+export const navlinkUpdateSchema: ZodSchema = object({
+  parent_node_id: string(),
+  tag_id: string(),
+  order: number(),
+})
   .partial()
   .refine(
     (data) => {

@@ -1,11 +1,15 @@
-import { Member, type Dashboard, type Store } from "../..";
+import { Member, type Dashboard, type ManagementStore } from "../..";
 
-export interface StoreResponseDTO extends Store {}
+export interface StoreResponseDTO extends ManagementStore {}
 
 export interface StoreCreateDTO
-  extends Pick<Store, "name" | "slug" | "game" | "currency" | "description"> {}
+  extends Pick<
+    ManagementStore,
+    "name" | "slug" | "game" | "currency" | "description"
+  > {}
 
-export interface StoreUpdateDTO extends Partial<Pick<Store, "slug" | "name">> {}
+export interface StoreUpdateDTO
+  extends Partial<Pick<ManagementStore, "slug" | "name">> {}
 
 export interface StatsDashboardDTO extends Dashboard {}
 

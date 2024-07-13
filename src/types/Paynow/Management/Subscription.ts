@@ -1,4 +1,5 @@
-import { type Currency, type Customer, type Scale, type Status } from ".";
+import { type Customer } from ".";
+import { type Currency, type Scale, type Status } from "../enum";
 
 /** Subscription Object */
 export type Subscription = {

@@ -1,12 +1,12 @@
 import {
   type Command,
   type Gameserver,
-  type Scale,
   type StockAvailable,
   type StockLimit,
   type Tag,
   type User,
 } from ".";
+import { type Scale } from "../enum";
 
 /** Product object */
 export type Product = {

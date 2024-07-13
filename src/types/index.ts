@@ -1,2 +1,2 @@
-export * from "./Paynow";
 export * from "./lib";
+export * from "./Paynow";

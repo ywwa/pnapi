@@ -6,9 +6,9 @@ import {
   type RequestOptions,
 } from "../../../..";
 import {
-  StoreUpdateDTO,
   type StoreCreateDTO,
   type StoreResponseDTO,
+  type StoreUpdateDTO,
 } from "../../../../dtos";
 import {
   Api,

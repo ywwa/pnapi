@@ -1,4 +1,4 @@
-import { type Scale } from ".";
+import { type Scale } from "../enum";
 
 /** Stock limit */
 export type StockLimit = {

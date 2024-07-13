@@ -1,4 +1,5 @@
-import { type Customer, type Line, type Status } from ".";
+import { type Customer, type Line } from ".";
+import { type Status } from "../enum";
 
 /** Order Object */
 export type Order = {
