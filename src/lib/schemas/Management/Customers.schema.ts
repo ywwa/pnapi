@@ -80,7 +80,7 @@ export const customerLookupSchema: ZodSchema = object({
   id: string().optional(),
   steam_id: string().optional(),
 }).refine(
-  (data) => !data.id && !data.steam_id,
+  (data) => data.id || data.steam_id,
   "Either id or steam_id must be specified",
 );
 
