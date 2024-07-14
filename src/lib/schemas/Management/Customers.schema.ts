@@ -25,7 +25,7 @@ export const customerResponseSchema: ZodSchema = object({
     id: string(),
     name: string(),
     avatar_url: string().nullable(),
-  }),
+  }).nullable(),
   name: string().nullable(),
   metadata: Metadata.nullable(),
   created_by: userSchema.nullable().optional(),
