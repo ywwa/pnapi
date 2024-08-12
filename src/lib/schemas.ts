@@ -6,3 +6,6 @@ export const GameEnum = z.enum(Object.values(Game) as [Game, ...Game[]]);
 export const CurrencyEnum = z.enum(
   Object.values(Currency) as [Currency, ...Currency[]],
 );
+export const SlugSchema = z
+  .string()
+  .regex(/^(?!-)(?!.*--)[a-zA-Z0-9-]+(?<!-)$/, "Invalid Slug");

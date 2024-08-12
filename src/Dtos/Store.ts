@@ -1,6 +1,12 @@
 import { z } from "zod";
-import { CurrencyEnum, DateSchema, GameEnum, ParseError } from "../lib";
-import type { Currency, Game } from "../types";
+import {
+  CurrencyEnum,
+  DateSchema,
+  GameEnum,
+  ParseError,
+  SlugSchema,
+} from "../lib";
+import { Currency, Game } from "../types";
 import Member from "./Member";
 import User from "./User";
 
@@ -31,7 +37,7 @@ namespace Store {
     /** User who last updated the store (User) */
     updated_by: User.Response | null;
     /** Array of store members (Member[]) */
-    members: Member.Response[];
+    members: Member.Response[] | null;
 
     constructor(payload: any) {
       const parsed = Schema.safeParse(payload);
@@ -58,8 +64,76 @@ namespace Store {
     created_at: DateSchema,
     updated_at: DateSchema.nullable(),
     updated_by: User.Schema.nullable(),
-    members: Member.Schema.array(),
+    members: Member.Schema.array().nullable(),
   });
+
+  export namespace Create {
+    export class Body {
+      name: string;
+      slug: string;
+      currency: Currency;
+      game: Game;
+      description?: string;
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z
+      .object({
+        name: z.string().min(2).max(24),
+        slug: SlugSchema.min(2).max(24),
+        currency: CurrencyEnum,
+        game: GameEnum,
+        description: z.string().min(20).max(400).optional(),
+      })
+      .refine(
+        (data) => {
+          if (data.game === Game.Other) {
+            return data.description !== undefined;
+          }
+          return true;
+        },
+        {
+          message: "Description must be provided when game is Other",
+          path: ["description"],
+        },
+      );
+  }
+
+  export namespace Update {
+    export class Body {
+      name?: string;
+      slug?: string;
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z
+      .object({
+        name: z.string().min(2).max(24).optional(),
+        slug: z.string().min(2).max(24).optional(),
+      })
+      .refine((data) => data.name || data.slug, {
+        message: "At least one of 'name' or 'slug' must be provided",
+        path: ["name", "slug"],
+      });
+  }
 }
 
 export default Store;
