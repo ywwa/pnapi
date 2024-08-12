@@ -1,3 +1,4 @@
+import Management from "./Management";
 import Paynow from "./Paynow";
 
-export { Paynow };
+export { Management, Paynow };

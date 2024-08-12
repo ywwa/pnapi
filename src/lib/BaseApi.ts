@@ -25,6 +25,11 @@ export class BaseApi {
     this.config = config;
   }
 
+  protected storeId = (storeId?: string): string => {
+    if (!storeId && !this.config.storeId) throw new Error("Missing store_id");
+    return storeId ?? this.config.storeId!;
+  };
+
   /** Check if the client has access to the endpoint */
   private checkAuthorization = (
     current: AccessType,
