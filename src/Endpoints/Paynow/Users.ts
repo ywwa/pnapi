@@ -1,6 +1,6 @@
 import { AccessType, type Endpoint } from "../../types";
 
-export namespace EUsers {
+export namespace Users {
   export const me: Endpoint = {
     version: 1,
     path: "users/@me",
