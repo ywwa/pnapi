@@ -75,7 +75,10 @@ export class BaseApi {
   };
 
   /** Get search parameters for request */
-  private getSearchParams = (search?: RequestSearch, epsp?: Search[]) => {
+  private getSearchParams = (
+    search?: RequestSearch,
+    epsp?: Search[],
+  ): URLSearchParams => {
     const reqParams = new URLSearchParams();
 
     if (search) {
@@ -90,6 +93,8 @@ export class BaseApi {
         }
       });
     }
+
+    return reqParams;
   };
 
   /** Get Axios Config */
