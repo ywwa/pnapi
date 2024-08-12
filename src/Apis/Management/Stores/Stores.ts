@@ -3,9 +3,11 @@ import { Management } from "../../../Endpoints";
 import { BaseApi } from "../../../lib";
 import { Method } from "../../../types";
 import { MembersApi } from "./Members";
+import { StatsApi } from "./Stats";
 
 export class StoresApi extends BaseApi {
   private membersApi: MembersApi;
+  private statsApi: StatsApi;
 
   public async create(body: Store.Create.Body): Promise<Store.Response> {
     const data = await this.request({
@@ -56,5 +58,11 @@ export class StoresApi extends BaseApi {
   public get Members(): MembersApi {
     if (!this.membersApi) this.membersApi = new MembersApi(this.config);
     return this.membersApi;
+  }
+
+  public get Stats(): StatsApi {
+    if (!this.statsApi) this.statsApi = new StatsApi(this.config);
+
+    return this.statsApi;
   }
 }

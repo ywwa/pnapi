@@ -39,7 +39,7 @@ namespace Store {
     /** Array of store members (Member[]) */
     members: Member.Response[] | null;
 
-    constructor(payload: any) {
+    constructor(payload: unknown) {
       const parsed = Schema.safeParse(payload);
       if (!parsed.success) throw new ParseError(parsed.error);
       Object.assign(this, parsed.data);
