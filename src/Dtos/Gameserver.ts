@@ -9,7 +9,7 @@ namespace Gameserver {
     /** ID if the store (flake) */
     store_id: string;
     /** Whether command is executed only when customer is online */
-    online_only: boolean;
+    online_only?: boolean;
     /** Name of the gameserver */
     name: string;
     /** Whether this gameserver is enabled */
@@ -43,7 +43,7 @@ namespace Gameserver {
   export const Schema = z.object({
     id: z.string(),
     store_id: z.string(),
-    online_only: z.boolean(),
+    online_only: z.boolean().optional(),
     name: z.string(),
     enabled: z.boolean(),
     token: z.string().nullable(),
@@ -53,6 +53,54 @@ namespace Gameserver {
     updated_by: User.Schema.nullable(),
     updated_at: DateSchema.nullable(),
   });
+
+  export namespace Create {
+    export class Body {
+      name: string;
+      enabled: boolean;
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z.object({
+      name: z.string().min(1).max(128),
+      enabled: z.boolean(),
+    });
+  }
+
+  export namespace Update {
+    export class Body {
+      name?: string;
+      enabled?: boolean;
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z
+      .object({
+        name: z.string().min(1).max(128).optional(),
+        enabled: z.boolean().optional(),
+      })
+      .refine((data) => data.name || data.enabled, {
+        message: "At least one property must be provided",
+      });
+  }
 }
 
 export default Gameserver;
