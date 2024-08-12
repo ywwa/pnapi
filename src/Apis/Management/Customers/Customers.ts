@@ -2,8 +2,11 @@ import { Customer } from "../../../Dtos";
 import { Customers } from "../../../Endpoints/Management";
 import { BaseApi } from "../../../lib";
 import { Method } from "../../../types";
+import { TokensApi } from "./Tokens";
 
 export class CustomersApi extends BaseApi {
+  private tokensApi: TokensApi;
+
   public async create(
     body: Customer.Create.Body,
     storeId?: string,
@@ -59,5 +62,11 @@ export class CustomersApi extends BaseApi {
     });
 
     return new Customer.Response(data);
+  }
+
+  public get Tokens(): TokensApi {
+    if (!this.tokensApi) this.tokensApi = new TokensApi(this.config);
+
+    return this.tokensApi;
   }
 }
