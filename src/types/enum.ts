@@ -30,22 +30,22 @@ export const Header = {
 export type Header = (typeof Header)[keyof typeof Header];
 
 export const Search = {
-  ID: "id",
-  STEAM_ID: "steam_id",
-  MINECRAFT_UUID: "minecraft_uuid",
-  ORDER_ID: "order_id",
-  SUBSCRIPTION_ID: "subscription_id",
-  CUSTOMER_ID: "customer_id",
-  CODE: "code",
-  NAME: "name",
-  IS_SUBSCRIPTION: "is_subscription",
-  INCLUDE_CANCELED: "include_canceled",
-  LIMIT: "limit",
-  TIMEZONE: "tz",
-  START: "start",
-  AFTER: "after",
-  END: "end",
-  BEFORE: "before",
+  Id: "id",
+  SteamId: "steam_id",
+  MinecraftUUID: "minecraft_uuid",
+  OrderId: "order_id",
+  SubscriptionId: "subscription_id",
+  CustomerId: "customer_id",
+  Code: "code",
+  Name: "name",
+  IsSubscription: "is_subscription",
+  IncludeCanceled: "include_canceled",
+  Limit: "limit",
+  Timezone: "tz",
+  Start: "start",
+  After: "after",
+  End: "end",
+  Before: "before",
 } as const;
 
 export type Search = (typeof Search)[keyof typeof Search];
