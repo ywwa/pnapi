@@ -17,3 +17,11 @@ export const Currency = {
 } as const;
 
 export type Currency = (typeof Currency)[keyof typeof Currency];
+
+export const Platform = {
+  Steam: "steam",
+  Minecraft: "minecraft",
+  MinecraftOffline: "minecraft_offline",
+} as const;
+
+export type Platform = (typeof Platform)[keyof typeof Platform];
