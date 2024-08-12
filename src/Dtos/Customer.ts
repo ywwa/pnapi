@@ -6,7 +6,7 @@ import {
   ParseError,
   ProfileSchema,
 } from "../lib";
-import { GenericProfile, Profile } from "../types";
+import type { GenericProfile, Profile } from "../types";
 import User from "./User";
 
 namespace Customer {

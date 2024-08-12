@@ -25,3 +25,39 @@ export const Platform = {
 } as const;
 
 export type Platform = (typeof Platform)[keyof typeof Platform];
+
+export const State = {
+  Usage: "usable",
+  Active: "active",
+  Used: "used",
+  Revoked: "revoked",
+} as const;
+
+export type State = (typeof State)[keyof typeof State];
+
+export const Stage = {
+  PURCHASE: "on_purchase",
+  EXPIRE: "on_expire",
+  RENEW: "on_renew",
+  REFUND: "on_refund",
+  CHARGEBACK: "on_chargeback",
+} as const;
+
+export type Stage = (typeof Stage)[keyof typeof Stage];
+
+export const RevokeReason = {
+  Admin: "admin",
+  Refund: "refund",
+  Chargeback: "chargeback",
+} as const;
+
+export type RevokeReason = (typeof RevokeReason)[keyof typeof RevokeReason];
+
+export const Scale = {
+  Day: "day",
+  Week: "week",
+  Month: "month",
+  Year: "year",
+} as const;
+
+export type Scale = (typeof Scale)[keyof typeof Scale];

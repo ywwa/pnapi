@@ -2,10 +2,12 @@ import { Customer } from "../../../Dtos";
 import { Customers } from "../../../Endpoints/Management";
 import { BaseApi } from "../../../lib";
 import { Method } from "../../../types";
+import { InventoryApi } from "./Inventory";
 import { TokensApi } from "./Tokens";
 
 export class CustomersApi extends BaseApi {
   private tokensApi: TokensApi;
+  private inventoryApi: InventoryApi;
 
   public async create(
     body: Customer.Create.Body,
@@ -68,5 +70,11 @@ export class CustomersApi extends BaseApi {
     if (!this.tokensApi) this.tokensApi = new TokensApi(this.config);
 
     return this.tokensApi;
+  }
+
+  public get Inventory(): InventoryApi {
+    if (!this.inventoryApi) this.inventoryApi = new InventoryApi(this.config);
+
+    return this.inventoryApi;
   }
 }

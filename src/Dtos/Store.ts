@@ -6,7 +6,7 @@ import {
   ParseError,
   SlugSchema,
 } from "../lib";
-import { Currency, Game } from "../types";
+import { type Currency, Game } from "../types";
 import Member from "./Member";
 import User from "./User";
 
