@@ -1,6 +1,7 @@
 import {
   CustomersApi,
   GameserversApi,
+  NavlinksApi,
   ProductsApi,
   StoresApi,
   TagsApi,
@@ -13,6 +14,7 @@ class Management extends BaseApi {
   private gameserversApi: GameserversApi;
   private productsApi: ProductsApi;
   private tagsApi: TagsApi;
+  private navlinksApi: NavlinksApi;
 
   public get Stores(): StoresApi {
     if (!this.storesApi) this.storesApi = new StoresApi(this.config);
@@ -43,6 +45,12 @@ class Management extends BaseApi {
     if (!this.tagsApi) this.tagsApi = new TagsApi(this.config);
 
     return this.tagsApi;
+  }
+
+  public get Navlinks(): NavlinksApi {
+    if (!this.navlinksApi) this.navlinksApi = new NavlinksApi(this.config);
+
+    return this.navlinksApi;
   }
 }
 

@@ -3,6 +3,7 @@ import Customer from "./Customer";
 import Gameserver from "./Gameserver";
 import Item from "./Item";
 import Member from "./Member";
+import Navlink from "./Navlink";
 import Product from "./Product";
 import Stats from "./Stats";
 import Store from "./Store";
@@ -16,6 +17,7 @@ export {
   Gameserver,
   Item,
   Member,
+  Navlink,
   Product,
   Stats,
   Store,
