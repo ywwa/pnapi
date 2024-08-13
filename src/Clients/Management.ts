@@ -1,10 +1,16 @@
-import { CustomersApi, GameserversApi, StoresApi } from "../Apis/Management";
+import {
+  CustomersApi,
+  GameserversApi,
+  ProductsApi,
+  StoresApi,
+} from "../Apis/Management";
 import { BaseApi } from "../lib";
 
 class Management extends BaseApi {
   private storesApi: StoresApi;
   private customersApi: CustomersApi;
   private gameserversApi: GameserversApi;
+  private productsApi: ProductsApi;
 
   public get Stores(): StoresApi {
     if (!this.storesApi) this.storesApi = new StoresApi(this.config);
@@ -23,6 +29,12 @@ class Management extends BaseApi {
       this.gameserversApi = new GameserversApi(this.config);
 
     return this.gameserversApi;
+  }
+
+  public get Products(): ProductsApi {
+    if (!this.productsApi) this.productsApi = new ProductsApi(this.config);
+
+    return this.productsApi;
   }
 }
 

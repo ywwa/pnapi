@@ -85,3 +85,10 @@ export const StockAvailableSchema = z.object({
 });
 
 export const StageEnum = z.enum(Object.values(Stage) as [Stage, ...Stage[]]);
+export const PriceSchema = z
+  .number()
+  .min(0)
+  .max(50_000_00)
+  .refine((v) => v === 0 || v >= 50, {
+    message: "Price must be 0 or at least 50",
+  });

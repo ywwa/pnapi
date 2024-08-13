@@ -2,9 +2,13 @@ import { z } from "zod";
 import {
   DateSchema,
   ParseError,
+  PriceSchema,
   ScaleEnum,
+  SlugSchema,
   StockAvailableSchema,
   StockLimitSchema,
+  validateRemoveAfter,
+  validateSubscription,
 } from "../lib";
 import type { Scale, StockAvailable, StockLimit } from "../types";
 import Command from "./Command";
@@ -59,13 +63,17 @@ namespace Product {
     /** whether the stock limiter should not include items that have been removed from a customer's inventory. */
     stock_limit_do_not_include_removed: boolean;
     /** STOCK_AVAILABLE */
-    stock_available: StockAvailable;
+    stock_available: StockAvailable | null;
     /** an array of tags used to describe the product. */
-    tags: Pick<Tag.Response, "id" | "slug" | "name">[];
+    tags: Pick<Tag.Response, "id" | "slug" | "name">[] | null;
     /** an array of game servers that product's commands should run on */
-    gameservers: Pick<Gameserver.Response, "id" | "name" | "online_only">[];
+    gameservers:
+      | Pick<Gameserver.Response, "id" | "name" | "online_only">[]
+      | null;
     /** an array of game servers that product's commands should run on */
-    commands: Pick<Command.Response, "stage" | "content" | "online_only">[];
+    commands:
+      | Pick<Command.Response, "stage" | "content" | "online_only">[]
+      | null;
     /** the user that created this product. (User) */
     created_by: Pick<
       User.Response,
@@ -111,18 +119,24 @@ namespace Product {
     store_stock_limit: StockLimitSchema,
     customer_stock_limit: StockLimitSchema,
     stock_limit_do_not_include_removed: z.boolean(),
-    stock_available: StockAvailableSchema,
-    tags: Tag.Schema.pick({ id: true, slug: true, name: true }).array(),
+    stock_available: StockAvailableSchema.nullable(),
+    tags: Tag.Schema.pick({ id: true, slug: true, name: true })
+      .array()
+      .nullable(),
     gameservers: Gameserver.Schema.pick({
       id: true,
       name: true,
       online_only: true,
-    }).array(),
+    })
+      .array()
+      .nullable(),
     commands: Command.Schema.pick({
       stage: true,
       content: true,
       online_only: true,
-    }).array(),
+    })
+      .array()
+      .nullable(),
     created_by: User.Schema.pick({
       id: true,
       first_name: true,
@@ -138,6 +152,132 @@ namespace Product {
     }).nullable(),
     updated_at: DateSchema.nullable(),
   });
+
+  export namespace Create {
+    export class Body {
+      name: string;
+      slug: string;
+      price: number;
+      enabled: boolean;
+      single_game_server_only?: boolean;
+      label?: string;
+      description: string;
+      tags?: string[];
+      gameservers?: string[];
+      commands?: Pick<Command.Response, "stage" | "content" | "online_only">[];
+      allow_one_time_purchase?: boolean;
+      allow_subscription?: boolean;
+      subscription_interval_value?: number;
+      subscription_interval_scale?: Scale;
+      remove_after_enabled?: boolean;
+      remove_after_time_value?: number;
+      remove_after_time_scale?: Scale;
+      store_stock_limit?: StockLimit;
+      customer_stock_limit?: StockLimit;
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z
+      .object({
+        name: z.string().min(2).max(128),
+        slug: SlugSchema,
+        price: PriceSchema,
+        enabled: z.boolean(),
+        single_game_server_only: z.boolean().optional(),
+        label: z.string().max(30).optional(),
+        description: z.string().min(1).max(50000),
+        tags: z.string().array().optional(),
+        gameservers: z.string().array().optional(),
+        commands: Command.Schema.pick({
+          stage: true,
+          content: true,
+          online_only: true,
+        })
+          .array()
+          .optional(),
+        allow_one_time_purchase: z.boolean().optional(),
+        allow_subscription: z.boolean().optional(),
+        subscription_interval_value: z.number().optional(),
+        subscription_interval_scale: z
+          .enum(["day", "week", "month", "year"])
+          .optional(),
+        remove_after_enabled: z.boolean().optional(),
+        remove_after_time_value: z.number().optional(),
+        remove_after_time_scale: z
+          .enum(["day", "week", "month", "year"])
+          .optional(),
+        store_stock_limit: StockLimitSchema.optional(),
+        customer_stock_limit: StockLimitSchema.optional(),
+      })
+      .superRefine((data, ctx) => {
+        validateSubscription(data, ctx);
+        validateRemoveAfter(data, ctx);
+      });
+  }
+
+  export namespace Update {
+    export class Body {
+      name?: string;
+      slug?: string;
+      description?: string;
+      price?: number;
+      allow_one_time_purchase?: boolean;
+      subscription_interval_value?: number;
+      subscription_interval_scale?: Scale;
+      remove_after_enabled?: boolean;
+      remove_after_time_value?: number;
+      remove_after_time_scale?: Scale;
+      store_stock_limit?: Partial<StockLimit>;
+      customer_stock_limit?: Partial<StockLimit>;
+      stock_limit_do_not_include_removed?: boolean;
+      tags?: string[];
+      gameservers?: string[];
+      commands?: Pick<Command.Response, "stage" | "content" | "online_only">[];
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z.object({
+      name: z.string().min(2).max(128).optional(),
+      slug: SlugSchema.min(2).max(128).optional(),
+      description: z.string().min(1).max(50000).optional(),
+      price: PriceSchema.optional(),
+      allow_one_time_purchase: z.boolean().optional(),
+      allow_subscription: z.boolean().optional(),
+      subscription_interval_value: z.number().optional(),
+      subscription_interval_scale: ScaleEnum.optional(),
+      remove_after_enabled: z.boolean().optional(),
+      remove_after_time_value: z.number().optional(),
+      remove_after_time_scale: ScaleEnum.optional(),
+      store_stock_limit: StockLimitSchema.optional(),
+      customer_stock_limit: StockLimitSchema.optional(),
+      stock_limit_do_not_include_removed: z.boolean().optional(),
+      tags: z.string().array().optional(),
+      gameservers: z.string().array().optional(),
+      commands: Command.Schema.pick({
+        stage: true,
+        content: true,
+        online_only: true,
+      }).array(),
+    });
+  }
 }
 
 export default Product;
