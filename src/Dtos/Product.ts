@@ -230,6 +230,7 @@ namespace Product {
       slug?: string;
       description?: string;
       price?: number;
+      enabled?: boolean;
       allow_one_time_purchase?: boolean;
       subscription_interval_value?: number;
       subscription_interval_scale?: Scale;
@@ -259,6 +260,7 @@ namespace Product {
       slug: SlugSchema.min(2).max(128).optional(),
       description: z.string().min(1).max(50000).optional(),
       price: PriceSchema.optional(),
+      enabled: z.boolean().optional(),
       allow_one_time_purchase: z.boolean().optional(),
       allow_subscription: z.boolean().optional(),
       subscription_interval_value: z.number().optional(),
