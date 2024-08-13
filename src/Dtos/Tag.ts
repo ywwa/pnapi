@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DateSchema, ParseError } from "../lib";
+import { DateSchema, ParseError, SlugSchema } from "../lib";
 import User from "./User";
 
 namespace Tag {
@@ -50,6 +50,54 @@ namespace Tag {
     updated_by: User.Schema.nullable(),
     updated_at: DateSchema.nullable(),
   });
+
+  export namespace Create {
+    export class Body {
+      name: string;
+      slug?: string;
+      description?: string;
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z.object({
+      name: z.string().min(1).max(36),
+      slug: SlugSchema.max(128).optional(),
+      description: z.string().max(50000).optional(),
+    });
+  }
+
+  export namespace Update {
+    export class Body {
+      name?: string;
+      slug?: string;
+      description?: string;
+
+      constructor(payload: unknown) {
+        const body = Schema.safeParse(payload);
+        if (!body.success) throw new ParseError(body.error);
+        Object.assign(this, body.data);
+        Object.keys(this).forEach((key) => {
+          this[key as keyof this] === undefined &&
+            delete this[key as keyof this];
+        });
+      }
+    }
+
+    const Schema = z.object({
+      name: z.string().min(1).max(36).optional(),
+      slug: SlugSchema.max(128).optional(),
+      description: z.string().max(50000).optional(),
+    });
+  }
 }
 
 export default Tag;
