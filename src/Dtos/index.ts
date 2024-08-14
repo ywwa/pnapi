@@ -8,6 +8,7 @@ import Order from "./Order";
 import Product from "./Product";
 import Stats from "./Stats";
 import Store from "./Store";
+import Subscription from "./Subscription";
 import Tag from "./Tag";
 import Token from "./Token";
 import User from "./User";
@@ -23,6 +24,7 @@ export {
   Product,
   Stats,
   Store,
+  Subscription,
   Tag,
   Token,
   User,
