@@ -61,3 +61,61 @@ export const Scale = {
 } as const;
 
 export type Scale = (typeof Scale)[keyof typeof Scale];
+
+export const Status = {
+  Created: "created",
+  Completed: "completed",
+  Canceled: "canceled",
+  Refunded: "refunded",
+} as const;
+
+export type Status = (typeof Status)[keyof typeof Status];
+
+export const NotTaxedReason = {
+  NotTaxedReasonExempt: "exempt",
+  NotTaxedReasonNoTax: "no_tax",
+  NotTaxedReasonNotCollecting: "not_collecting",
+  NotTaxedReasonProductNotTaxed: "product_not_taxed",
+} as const;
+
+export type NotTaxedReason =
+  (typeof NotTaxedReason)[keyof typeof NotTaxedReason];
+
+export const DeclineCode = {
+  Unknown: "unknown",
+  GenericDecline: "generic_decline",
+  CallIssuer: "call_issuer",
+  AuthenticationRequired: "authentication_required",
+  CurrencyNotSupported: "currency_not_supported",
+  DuplicateTransaction: "duplicate_transaction",
+  ExpiredCard: "expired_card",
+  Fraudulent: "fraudulent",
+  IncorrectNumber: "incorrect_number",
+  IncorrectCvc: "incorrect_cvc",
+  IncorrectPin: "incorrect_pin",
+  IncorrectZip: "incorrect_zip",
+  InsufficientFunds: "insufficient_funds",
+  InvalidAccount: "invalid_account",
+  InvalidAmount: "invalid_amount",
+  InvalidExpiryMonth: "invalid_expiry_month",
+  InvalidExpiryYear: "invalid_expiry_year",
+  IssuerNotAvailable: "issuer_not_available",
+  LostCard: "lost_card",
+  MerchantBlacklist: "merchant_blacklist",
+  NewAccountInformationAvailable: "new_account_information_available",
+  NoActionTaken: "no_action_taken",
+  PicupCard: "pickup_card",
+  PinTryExceeded: "pin_try_exceeded",
+  RestrictedCard: "restricted_card",
+  StolenCard: "stolen_card",
+  TestmodeDecline: "testmode_decline",
+  TryAgainLater: "try_again_later",
+  SecurityViolation: "security_violation",
+  CardVelocityExceeded: "card_velocity_exceeded",
+  DoNotHonor: "do_not_honor",
+  ProcessingError: "processing_error",
+  CardNotSupported: "card_not_supported",
+  TransactionNotAllowed: "transaction_not_allowed",
+} as const;
+
+export type DeclineCode = (typeof DeclineCode)[keyof typeof DeclineCode];

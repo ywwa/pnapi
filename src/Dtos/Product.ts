@@ -3,13 +3,13 @@ import {
   DateSchema,
   ParseError,
   PriceSchema,
-  ScaleEnum,
   SlugSchema,
   StockAvailableSchema,
   StockLimitSchema,
   validateRemoveAfter,
   validateSubscription,
 } from "../lib";
+import { ScaleEnum } from "../lib/schemas/enum";
 import type { Scale, StockAvailable, StockLimit } from "../types";
 import Command from "./Command";
 import Gameserver from "./Gameserver";

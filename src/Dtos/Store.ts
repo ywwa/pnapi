@@ -1,11 +1,6 @@
 import { z } from "zod";
-import {
-  CurrencyEnum,
-  DateSchema,
-  GameEnum,
-  ParseError,
-  SlugSchema,
-} from "../lib";
+import { DateSchema, ParseError, SlugSchema } from "../lib";
+import { CurrencyEnum, GameEnum } from "../lib/schemas/enum";
 import { type Currency, Game } from "../types";
 import Member from "./Member";
 import User from "./User";

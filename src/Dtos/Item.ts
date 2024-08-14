@@ -1,11 +1,6 @@
 import { z } from "zod";
-import {
-  CommandAttemptSchema,
-  DateSchema,
-  ParseError,
-  RevokeReasonEnum,
-  StateEnum,
-} from "../lib";
+import { CommandAttemptSchema, DateSchema, ParseError } from "../lib";
+import { RevokeReasonEnum, StateEnum } from "../lib/schemas/enum";
 import type { CommandAttempt, RevokeReason, State } from "../types";
 import Customer from "./Customer";
 import Product from "./Product";

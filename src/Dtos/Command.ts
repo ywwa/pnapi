@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { StageEnum } from "../lib";
+import { StageEnum } from "../lib/schemas/enum";
 import type { Stage } from "../types";
 
 namespace Command {
