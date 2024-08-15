@@ -5,6 +5,7 @@ export * from "./Giftcards";
 export * from "./Navlinks";
 export * from "./Orders";
 export * from "./Products";
+export * from "./Sales";
 export * from "./Stores";
 export * from "./Subscriptions";
 export * from "./Tags";

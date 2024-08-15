@@ -8,6 +8,7 @@ import Member from "./Member";
 import Navlink from "./Navlink";
 import Order from "./Order";
 import Product from "./Product";
+import Sale from "./Sale";
 import Stats from "./Stats";
 import Store from "./Store";
 import Subscription from "./Subscription";
@@ -26,6 +27,7 @@ export {
   Navlink,
   Order,
   Product,
+  Sale,
   Stats,
   Store,
   Subscription,

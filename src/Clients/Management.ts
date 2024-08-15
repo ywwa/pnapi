@@ -6,6 +6,7 @@ import {
   NavlinksApi,
   OrdersApi,
   ProductsApi,
+  SalesApi,
   StoresApi,
   TagsApi,
 } from "../Apis/Management";
@@ -21,6 +22,7 @@ class Management extends BaseApi {
   private ordersApi: OrdersApi;
   private couponsApi: CouponsApi;
   private giftcardsApi: GiftcardsApi;
+  private salesApi: SalesApi;
 
   public get Stores(): StoresApi {
     if (!this.storesApi) this.storesApi = new StoresApi(this.config);
@@ -75,6 +77,12 @@ class Management extends BaseApi {
     if (!this.giftcardsApi) this.giftcardsApi = new GiftcardsApi(this.config);
 
     return this.giftcardsApi;
+  }
+
+  public get Sales(): SalesApi {
+    if (!this.salesApi) this.salesApi = new SalesApi(this.config);
+
+    return this.salesApi;
   }
 }
 
