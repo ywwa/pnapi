@@ -11,9 +11,20 @@ export type Line = {
   subscription_interval_value: number | null;
   subscription_interval_scale: Scale | null;
   gift: boolean;
-  // NOTE: This is most likely invalid schema
-  // TODO: get correct schema
-  gift_to_customer: Omit<Customer.Response, "created_by" | "updated_by"> | null;
+  gift_to_customer: Pick<
+    Customer.Response,
+    | "id"
+    | "store_id"
+    | "profile"
+    | "steam_id"
+    | "steam"
+    | "minecraft_uuid"
+    | "minecraft"
+    | "name"
+    | "metadata"
+    | "created_at"
+    | "updated_at"
+  > | null;
   selected_gameserver_id: string | null;
   price: number;
   price_str: string;

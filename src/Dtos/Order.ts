@@ -24,11 +24,18 @@ export const LineSchema = z.object({
   subscription_interval_value: z.number().nullable(),
   subscription_interval_scale: ScaleEnum.nullable(),
   gift: z.boolean(),
-  // NOTE: This is most likely invalid schema
-  // TODO: get correct schema
-  gift_to_customer: Customer.Schema.omit({
-    created_by: true,
-    updated_by: true,
+  gift_to_customer: Customer.Schema.pick({
+    id: true,
+    store_id: true,
+    profile: true,
+    steam_id: true,
+    steam: true,
+    minecraft_uuid: true,
+    minecraft: true,
+    name: true,
+    metadata: true,
+    created_at: true,
+    updated_at: true,
   }).nullable(),
   selected_gameserver_id: z.string().nullable(),
   price: z.number(),
