@@ -119,3 +119,7 @@ export const DeclineCode = {
 } as const;
 
 export type DeclineCode = (typeof DeclineCode)[keyof typeof DeclineCode];
+
+export const DiscountType = { Amount: "amount", Percent: "percent" } as const;
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType];

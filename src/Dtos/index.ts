@@ -1,4 +1,5 @@
 import Command from "./Command";
+import Coupon from "./Coupon";
 import Customer from "./Customer";
 import Gameserver from "./Gameserver";
 import Item from "./Item";
@@ -15,6 +16,7 @@ import User from "./User";
 
 export {
   Command,
+  Coupon,
   Customer,
   Gameserver,
   Item,

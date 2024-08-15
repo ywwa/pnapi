@@ -6,6 +6,10 @@ export const SlugSchema = z
   .string()
   .regex(/^(?!-)(?!.*--)[a-zA-Z0-9-]+(?<!-)$/, "Invalid Slug");
 
+export const CodeSchema = z
+  .string()
+  .regex(/^(?!-)(?!.*--)[a-zA-Z0-9-]+(?<!-)$/, "Invalid Code");
+
 export const MetadataSchema = z
   .record(z.string().max(40), z.string().max(500))
   .superRefine((meta, ctx) => {

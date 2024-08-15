@@ -1,4 +1,5 @@
 import {
+  CouponsApi,
   CustomersApi,
   GameserversApi,
   NavlinksApi,
@@ -17,6 +18,7 @@ class Management extends BaseApi {
   private tagsApi: TagsApi;
   private navlinksApi: NavlinksApi;
   private ordersApi: OrdersApi;
+  private couponsApi: CouponsApi;
 
   public get Stores(): StoresApi {
     if (!this.storesApi) this.storesApi = new StoresApi(this.config);
@@ -59,6 +61,12 @@ class Management extends BaseApi {
     if (!this.ordersApi) this.ordersApi = new OrdersApi(this.config);
 
     return this.ordersApi;
+  }
+
+  public get Coupons(): CouponsApi {
+    if (!this.couponsApi) this.couponsApi = new CouponsApi(this.config);
+
+    return this.couponsApi;
   }
 }
 

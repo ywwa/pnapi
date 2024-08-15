@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   Currency,
   DeclineCode,
+  DiscountType,
   Game,
   NotTaxedReason,
   Platform,
@@ -42,4 +43,8 @@ export const StatusEnum = z.enum(
 
 export const DeclineCodeEnum = z.enum(
   Object.values(DeclineCode) as [DeclineCode, ...DeclineCode[]],
+);
+
+export const DiscountTypeEnum = z.enum(
+  Object.values(DiscountType) as [DiscountType, ...DiscountType[]],
 );

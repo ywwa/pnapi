@@ -1,4 +1,5 @@
 import { RefinementCtx } from "zod";
+import { DiscountType } from "../types";
 
 export const makePath = (base: string, ...rest: string[]): string =>
   [base, ...rest].join("/");
@@ -48,6 +49,36 @@ export function validateRemoveAfter(data: any, ctx: RefinementCtx) {
         message: "Remove after requires both value and scale",
         path: ["remove_after_time_value", "remove_after_time_scale"],
       });
+    }
+  }
+}
+
+export function validateDiscount(data: any, ctx: RefinementCtx) {
+  const { discount_type, discount_amount } = data;
+
+  if (discount_type && discount_amount) {
+    switch (discount_type) {
+      case DiscountType.Percent:
+        if (discount_amount < 1 || discount_amount > 100) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Discount amount must be between 1 and 100",
+            path: ["discount_amount"],
+          });
+        }
+        break;
+
+      case DiscountType.Amount:
+        if (discount_amount < 1 || discount_amount > 10000000) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Discount amount must be between 1 and 10,000,000",
+            path: ["discount_amount"],
+          });
+        }
+        break;
+      default:
+        break;
     }
   }
 }
