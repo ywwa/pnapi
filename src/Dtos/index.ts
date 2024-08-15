@@ -2,6 +2,7 @@ import Command from "./Command";
 import Coupon from "./Coupon";
 import Customer from "./Customer";
 import Gameserver from "./Gameserver";
+import Giftcard from "./Giftcard";
 import Item from "./Item";
 import Member from "./Member";
 import Navlink from "./Navlink";
@@ -19,6 +20,7 @@ export {
   Coupon,
   Customer,
   Gameserver,
+  Giftcard,
   Item,
   Member,
   Navlink,

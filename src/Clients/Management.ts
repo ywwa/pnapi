@@ -2,6 +2,7 @@ import {
   CouponsApi,
   CustomersApi,
   GameserversApi,
+  GiftcardsApi,
   NavlinksApi,
   OrdersApi,
   ProductsApi,
@@ -19,6 +20,7 @@ class Management extends BaseApi {
   private navlinksApi: NavlinksApi;
   private ordersApi: OrdersApi;
   private couponsApi: CouponsApi;
+  private giftcardsApi: GiftcardsApi;
 
   public get Stores(): StoresApi {
     if (!this.storesApi) this.storesApi = new StoresApi(this.config);
@@ -67,6 +69,12 @@ class Management extends BaseApi {
     if (!this.couponsApi) this.couponsApi = new CouponsApi(this.config);
 
     return this.couponsApi;
+  }
+
+  public get Giftcards(): GiftcardsApi {
+    if (!this.giftcardsApi) this.giftcardsApi = new GiftcardsApi(this.config);
+
+    return this.giftcardsApi;
   }
 }
 
