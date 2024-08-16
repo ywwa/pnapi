@@ -1,11 +1,13 @@
 import axios, { type AxiosRequestConfig } from "axios";
 import {
   AccessType,
+  Header,
   Method,
   type ApiConfig,
+  type CustomerMeta,
   type Endpoint,
   type EndpointHeaders,
-  type Header,
+  type RequestHeader,
   type RequestOptions,
   type RequestSearch,
   type Search,
@@ -18,14 +20,20 @@ const joinPath = (base: string, ...parts: string[]): string =>
 export class BaseApi {
   /** Base API Url */
   private readonly baseUrl: string = "https://api.paynow.gg";
-  /** Client Configuration */
+  /** Api Client Configuration */
   protected readonly config: ApiConfig;
+  /** Customer Meta */
+  protected customer?: CustomerMeta;
 
-  constructor(config: ApiConfig) {
+  constructor(config: ApiConfig);
+  constructor(config: ApiConfig, meta: CustomerMeta);
+
+  constructor(config: ApiConfig, meta?: CustomerMeta) {
     this.config = config;
+    if (meta) this.customer = meta;
   }
 
-  protected storeId = (storeId?: string): string => {
+  protected storeId = (storeId: string | undefined): string => {
     if (!storeId && !this.config.storeId) throw new Error("Missing store_id");
     return storeId ?? this.config.storeId!;
   };
@@ -46,29 +54,32 @@ export class BaseApi {
 
   /** Get headers for request */
   private getHeaders = (
-    headers?: Header[],
+    headers?: RequestHeader,
     ephd?: EndpointHeaders,
+    withMeta: boolean = false,
   ): Record<string, string> => {
     const reqHeaders: Record<string, string> = {
       "Content-Type": "application/json",
     };
 
-    if (headers) {
-      Object.entries(headers).forEach(([k, v]) => {
-        if (
-          (ephd?.required?.includes(k as Header) ||
-            ephd?.optional?.includes(k as Header)) &&
-          v !== undefined &&
-          v !== null
-        ) {
-          reqHeaders[k] = v;
-        }
-      });
-    }
-
     if (this.config.access.type !== AccessType.Anonymous) {
       reqHeaders["Authorization"] =
         `${this.config.access.type} ${this.config.access.key}`;
+    }
+
+    if (headers && ephd) {
+      const allHeaders = [...(ephd.required ?? []), ...(ephd.optional ?? [])];
+
+      Object.entries(headers).forEach(([key, value]) => {
+        if (allHeaders.includes(key as Header) && value !== undefined)
+          reqHeaders[key] = value;
+      });
+    }
+
+    if (withMeta && this.customer) {
+      const { ip, country } = this.customer;
+      if (ip) reqHeaders[Header.CustomerIp] = ip;
+      if (country) reqHeaders[Header.CustomerCountry] = country;
     }
 
     return reqHeaders;
@@ -98,20 +109,28 @@ export class BaseApi {
   };
 
   /** Get Axios Config */
-  private axiosConfig = (opts: RequestOptions): AxiosRequestConfig => ({
+  private axiosConfig = (
+    opts: RequestOptions,
+    withMeta: boolean = false,
+  ): AxiosRequestConfig => ({
     baseURL: this.baseUrl,
     url: this.getEndpoint(opts.endpoint),
     method: opts.method ?? Method.GET,
-    headers: this.getHeaders(opts.headers),
-    params: this.getSearchParams(opts.search, opts.endpoint.search),
+    headers: this.getHeaders(opts.headers, opts.endpoint.headers, withMeta),
+    ...(opts.search && {
+      params: this.getSearchParams(opts.search, opts.endpoint.search),
+    }),
     ...(opts.body && { data: opts.body }),
   });
 
   /** Perform API Request to the endpoint */
-  protected request = async <T>(opts: RequestOptions): Promise<T> => {
+  protected request = async <T>(
+    opts: RequestOptions,
+    withMeta: boolean = false,
+  ): Promise<T> => {
     this.checkAuthorization(this.config.access.type, opts.endpoint.access);
 
-    const axiosConfig: AxiosRequestConfig = this.axiosConfig(opts);
+    const axiosConfig: AxiosRequestConfig = this.axiosConfig(opts, withMeta);
     try {
       const response = await axios(axiosConfig);
       return response.data;
