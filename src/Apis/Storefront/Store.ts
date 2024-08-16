@@ -6,7 +6,18 @@ export class StoreApi extends BaseApi {
   public async get(
     storeId?: string,
     withMeta: boolean = false,
-  ): Promise<Store.Public> {
+  ): Promise<
+    Pick<
+      Store.Response,
+      | "id"
+      | "slug"
+      | "name"
+      | "game"
+      | "currency"
+      | "logo_url"
+      | "logo_square_logo"
+    >
+  > {
     const data = await this.request(
       {
         endpoint: Storefront.Store,
@@ -15,6 +26,16 @@ export class StoreApi extends BaseApi {
       withMeta,
     );
 
-    return new Store.Public(data);
+    return new Store.Response(data, {
+      pick: {
+        id: true,
+        slug: true,
+        name: true,
+        game: true,
+        currency: true,
+        logo_url: true,
+        logo_square_url: true,
+      },
+    });
   }
 }

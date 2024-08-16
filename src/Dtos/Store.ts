@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { DateSchema, ParseError, SlugSchema } from "../lib";
 import { CurrencyEnum, GameEnum } from "../lib/schemas/enum";
-import { type Currency, Game } from "../types";
+import { type Currency, Game, SchemaOptions, TResponse } from "../types";
 import Member from "./Member";
 import User from "./User";
 
@@ -11,10 +11,10 @@ namespace Store {
     id: string;
     /** Owner Object (User) */
     owner: Pick<User.Response, "id" | "first_name" | "last_name" | "email">;
-    /** Name of the store */
-    name: string;
     /** URL-safe store identifier */
     slug: string;
+    /** Name of the store */
+    name: string;
     /** Game associated with the store */
     game: Game;
     /** Main currency of the store */
@@ -34,32 +34,16 @@ namespace Store {
     /** Array of store members (Member[]) */
     members: Member.Response[] | null;
 
-    constructor(payload: unknown) {
-      const parsed = Schema.safeParse(payload);
-      if (!parsed.success) throw new ParseError(parsed.error);
-      Object.assign(this, parsed.data);
-    }
-  }
-
-  export class Public {
-    id: string;
-    slug: string;
-    name: string;
-    game: string;
-    currency: string;
-    logo_url: string | null;
-    logo_square_logo: string | null;
-
-    constructor(payload: unknown) {
-      const store = Schema.pick({
-        id: true,
-        slug: true,
-        name: true,
-        game: true,
-        currency: true,
-        logo_url: true,
-        logo_square_url: true,
-      }).safeParse(payload);
+    constructor(
+      payload: unknown,
+      options?: SchemaOptions<TResponse<typeof Schema>>,
+    ) {
+      const schema = options?.omit
+        ? Schema.omit(options.omit)
+        : options?.pick
+          ? Schema.pick(options.pick)
+          : Schema;
+      const store = schema.safeParse(payload);
 
       if (!store.success) throw new ParseError(store.error);
       Object.assign(this, store.data);
