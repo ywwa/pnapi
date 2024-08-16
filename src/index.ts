@@ -1,3 +1,3 @@
-import { Management, Paynow } from "./Clients";
+import { Management, Paynow, Storefront } from "./Clients";
 
-export { Management, Paynow };
+export { Management, Paynow, Storefront };

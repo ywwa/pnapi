@@ -1,4 +1,4 @@
-import UsersApi from "../Apis/Paynow/Users";
+import { UsersApi } from "../Apis";
 import { BaseApi } from "../lib";
 
 class Paynow extends BaseApi {

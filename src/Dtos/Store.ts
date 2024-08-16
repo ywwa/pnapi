@@ -41,6 +41,31 @@ namespace Store {
     }
   }
 
+  export class Public {
+    id: string;
+    slug: string;
+    name: string;
+    game: string;
+    currency: string;
+    logo_url: string | null;
+    logo_square_logo: string | null;
+
+    constructor(payload: unknown) {
+      const store = Schema.pick({
+        id: true,
+        slug: true,
+        name: true,
+        game: true,
+        currency: true,
+        logo_url: true,
+        logo_square_url: true,
+      }).safeParse(payload);
+
+      if (!store.success) throw new ParseError(store.error);
+      Object.assign(this, store.data);
+    }
+  }
+
   export const Schema = z.object({
     id: z.string(),
     owner: User.Schema.pick({

@@ -1,1 +1,3 @@
-export * from "./Users";
+import UsersApi from "./Users";
+
+export { UsersApi };
