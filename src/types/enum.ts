@@ -22,9 +22,9 @@ export type Method = (typeof Method)[keyof typeof Method];
 
 /** Headers used in Paynow API */
 export const Header = {
-  STORE_ID: "x-paynow-store-id",
-  CUSTOMER_IP: "x-paynow-customer-ip",
-  CUSTOMER_COUNTRY: "x-paynow-customer-countrycode",
+  StoreId: "x-paynow-store-id",
+  CustomerIp: "x-paynow-customer-ip",
+  CustomerCountry: "x-paynow-customer-countrycode",
 } as const;
 
 export type Header = (typeof Header)[keyof typeof Header];
