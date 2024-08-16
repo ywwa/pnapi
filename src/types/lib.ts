@@ -1,21 +1,12 @@
 import type { AccessType, Header, Method, Search } from "./enum";
 
-export type Authorization = {
-  type: AccessType;
-  key?: string;
-};
+export type Authorization = { type: AccessType; key?: string; };
 
-export type ApiConfig = {
-  access: Authorization;
-  storeId?: string;
-};
+export type ApiConfig = { access: Authorization; storeId?: string };
 
-export type ClientConfig = ApiConfig & {};
+export type CustomerMeta = { ip?: string; country?: string };
 
-export type EndpointHeaders = {
-  required?: Header[];
-  optional?: Header[];
-};
+export type EndpointHeaders = { required?: Header[]; optional?: Header[] };
 
 export interface Endpoint {
   version: number;
@@ -27,10 +18,12 @@ export interface Endpoint {
 
 export type RequestSearch = { [key in Search]?: any };
 
+export type RequestHeader = { [key in Header]?: string };
+
 export type RequestOptions = {
   endpoint: Endpoint;
   method?: Method;
-  headers?: Header[];
+  headers?: RequestHeader;
   search?: RequestSearch;
   body?: Record<string, any>;
 };
