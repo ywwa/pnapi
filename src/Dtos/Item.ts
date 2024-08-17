@@ -1,7 +1,13 @@
 import { z } from "zod";
 import { CommandAttemptSchema, DateSchema, ParseError } from "../lib";
 import { RevokeReasonEnum, StateEnum } from "../lib/schemas/enum";
-import type { CommandAttempt, RevokeReason, State } from "../types";
+import type {
+  CommandAttempt,
+  RevokeReason,
+  SchemaOptions,
+  State,
+  TResponse,
+} from "../types";
 import Customer from "./Customer";
 import Product from "./Product";
 import User from "./User";
@@ -12,6 +18,8 @@ namespace Item {
     id: string;
     /** ID of the store (flake) */
     store_id: string;
+    /** ID of the customer who owns item (flake) *storefront only */
+    customer_id?: string;
     /** Customer who owns item */
     customer: Pick<
       Customer.Response,
@@ -82,10 +90,24 @@ namespace Item {
     /** Who revoked item from customers inventory (User.Response) */
     revoked_by: Pick<User.Response, "id" | "first_name" | "last_name"> | null;
 
-    constructor(payload: unknown) {
-      const item = Schema.safeParse(payload);
+    constructor(
+      payload: unknown,
+      options?: SchemaOptions<TResponse<typeof Schema>>,
+    ) {
+      const schema = options?.omit
+        ? Schema.omit(options.omit)
+        : options?.pick
+          ? Schema.pick(options.pick)
+          : Schema;
+
+      const item = schema.safeParse(payload);
       if (!item.success) throw new ParseError(item.error);
       Object.assign(this, item.data);
+      Object.keys(this).forEach((key) => {
+        if (this[key as keyof this] === undefined) {
+          delete this[key as keyof this];
+        }
+      });
     }
   }
 

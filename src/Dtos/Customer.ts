@@ -6,7 +6,12 @@ import {
   ParseError,
   ProfileSchema,
 } from "../lib";
-import type { GenericProfile, Profile } from "../types";
+import type {
+  GenericProfile,
+  Profile,
+  SchemaOptions,
+  TResponse,
+} from "../types";
 import User from "./User";
 
 namespace Customer {
@@ -44,10 +49,19 @@ namespace Customer {
     /** Date when customer was last updated */
     updated_at: Date | null;
 
-    constructor(payload: unknown) {
-      const customer = Schema.safeParse(payload);
+    constructor(
+      payload: unknown,
+      options?: SchemaOptions<TResponse<typeof Schema>>,
+    ) {
+      const schema = options?.omit
+        ? Schema.omit(options.omit)
+        : options?.pick
+          ? Schema.pick(options.pick)
+          : Schema;
+
+      const customer = schema.safeParse(payload);
       if (!customer.success) throw new ParseError(customer.error);
-      Object.assign(this, customer.data);
+      Object.assign(this, customer);
     }
   }
 

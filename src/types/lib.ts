@@ -1,6 +1,7 @@
+import { z } from "zod";
 import type { AccessType, Header, Method, Search } from "./enum";
 
-export type Authorization = { type: AccessType; key?: string; };
+export type Authorization = { type: AccessType; key?: string };
 
 export type ApiConfig = { access: Authorization; storeId?: string };
 
@@ -27,3 +28,11 @@ export type RequestOptions = {
   search?: RequestSearch;
   body?: Record<string, any>;
 };
+
+export type TResponse<T extends z.ZodType<any, any>> = z.infer<T>;
+
+export interface SchemaOptions<T> {
+  omit?: Partial<Record<keyof T, true>>;
+  pick?: Partial<Record<keyof T, true>>;
+  extend?: Partial<Record<string, z.ZodType<any>>>;
+}

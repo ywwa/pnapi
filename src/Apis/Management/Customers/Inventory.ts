@@ -19,8 +19,8 @@ export class InventoryApi extends BaseApi {
     customerId: string,
     body: Item.Assign.Body,
     storeId?: string,
-  ): Promise<Item.Response[]> {
-    const data = await this.request<Item.Response[]>({
+  ): Promise<Omit<Item.Response, "customer_id">[]> {
+    const data = await this.request<Omit<Item.Response, "customer_id">[]>({
       endpoint: CommandDelivery.base(this.storeId(storeId), customerId),
       method: Method.POST,
       body: new Item.Assign.Body(body),
