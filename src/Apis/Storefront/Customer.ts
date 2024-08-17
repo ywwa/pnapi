@@ -21,6 +21,7 @@ type TItem = Pick<
   | "expires_at"
   | "removed_at"
   | "customer_id"
+  | "revoke_reason"
 >;
 
 export class CustomerApi extends BaseApi {
@@ -57,6 +58,7 @@ export class CustomerApi extends BaseApi {
             active_at: true,
             expires_at: true,
             removed_at: true,
+            revoke_reason: true,
           },
           extend: { customer_id: z.string() },
         }),
