@@ -94,11 +94,13 @@ namespace Item {
       payload: unknown,
       options?: SchemaOptions<TResponse<typeof Schema>>,
     ) {
-      const schema = options?.omit
+      let schema = options?.omit
         ? Schema.omit(options.omit)
         : options?.pick
           ? Schema.pick(options.pick)
           : Schema;
+
+      schema = options?.extend ? schema.extend(options.extend) : schema;
 
       const item = schema.safeParse(payload);
       if (!item.success) throw new ParseError(item.error);
