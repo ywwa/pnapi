@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { DateSchema, ParseError } from "../lib";
 import { ScaleEnum, StatusEnum } from "../lib/schemas/enum";
-import type { Scale, Status } from "../types";
+import type { Scale, SchemaOptions, Status, TResponse } from "../types";
 import Customer from "./Customer";
 
 namespace Subscription {
@@ -10,15 +10,28 @@ namespace Subscription {
     id: string;
     /** Subscription ID but prettier */
     pretty_id: string;
-    /** ID of the store */
+    /** ID of the store (flake) */
     store_id: string;
     /** Customer associated with the subscription */
-    customer: Omit<Customer.Response, "created_by" | "updated_by">;
+    customer: Pick<
+      Customer.Response,
+      | "id"
+      | "store_id"
+      | "profile"
+      | "steam_id"
+      | "steam"
+      | "minecraft_uuid"
+      | "minecraft"
+      | "name"
+      | "metadata"
+      | "created_at"
+      | "updated_at"
+    >;
     /** Status of the subscription */
     status: Status;
     /** Checkout ID (flake) */
     checkout_id: string | null;
-    /** Checkout Line ID (flake) */
+    /** Checkout line ID (flake) */
     checkout_line_id: string | null;
     /** Billing name associated with the subscription */
     billing_name: string;
@@ -28,17 +41,12 @@ namespace Subscription {
     billing_country: string;
     /** Customer IP address */
     customer_ip: string | null;
-    /** Gift associated with the subscription */
-    gift: boolean;
-    /** Gift to customer associated with the subscription */
-    gift_to_customer: Omit<
-      Customer.Response,
-      "created_by" | "updated_by"
-    > | null;
     /** Product ID (flake) */
     product_id: string;
     /** Product version ID (flake) */
     product_version_id: string;
+    /** Name of the product */
+    product_name: string;
     /** Product image URL */
     product_image_url: string | null;
     /** Interval value when subscription is being renewed */
@@ -85,6 +93,12 @@ namespace Subscription {
     initial_tax_amount: number;
     /** Stringified initial tax amount */
     initial_tax_amount_str: string;
+    /** Initial total amount */
+    initial_total_amount: number;
+    /** Stringified initial total amount */
+    initial_total_amount_str: string;
+    /** ID of the region */
+    pricing_region_id: string | null;
     /** Date when current period starts */
     current_period_start: Date;
     /** Date when current period ends */
@@ -102,10 +116,26 @@ namespace Subscription {
     /** Reason why subscription was canceled */
     cancel_reason: string | null;
 
-    constructor(payload: unknown) {
-      const subscription = Schema.safeParse(payload);
+    constructor(
+      payload: unknown,
+      options?: SchemaOptions<TResponse<typeof Schema>>,
+    ) {
+      let schema = options?.pick
+        ? Schema.pick(options.pick)
+        : options?.omit
+          ? Schema.omit(options.omit)
+          : Schema;
+
+      schema = options?.extend ? schema.extend(options.extend) : schema;
+
+      const subscription = schema.safeParse(payload);
       if (!subscription.success) throw new ParseError(subscription.error);
       Object.assign(this, subscription.data);
+      Object.keys(this).forEach((key) => {
+        if (this[key as keyof this] === undefined) {
+          delete this[key as keyof this];
+        }
+      });
     }
   }
 
@@ -113,7 +143,19 @@ namespace Subscription {
     id: z.string(),
     pretty_id: z.string(),
     store_id: z.string(),
-    customer: Customer.Schema.omit({ created_by: true, updated_by: true }),
+    customer: Customer.Schema.pick({
+      id: true,
+      store_id: true,
+      profile: true,
+      steam_id: true,
+      steam: true,
+      minecraft_uuid: true,
+      minecraft: true,
+      name: true,
+      metadata: true,
+      created_at: true,
+      updated_at: true,
+    }),
     status: StatusEnum,
     checkout_id: z.string().nullable(),
     checkout_line_id: z.string().nullable(),
@@ -121,13 +163,9 @@ namespace Subscription {
     billing_email: z.string(),
     billing_country: z.string(),
     customer_ip: z.string().nullable(),
-    gift: z.boolean(),
-    gift_to_customer: Customer.Schema.omit({
-      created_by: true,
-      updated_by: true,
-    }).nullable(),
     product_id: z.string(),
     product_version_id: z.string(),
+    product_name: z.string(),
     product_image_url: z.string().nullable(),
     interval_value: z.number(),
     interval_scale: ScaleEnum,
@@ -151,6 +189,9 @@ namespace Subscription {
     initial_giftcard_usage_amount_str: z.string(),
     initial_tax_amount: z.number(),
     initial_tax_amount_str: z.string(),
+    initial_total_amount: z.number(),
+    initial_total_amount_str: z.string(),
+    pricing_region_id: z.string().nullable(),
     current_period_start: DateSchema,
     current_period_end: DateSchema,
     billing_cycle_sequence: z.number().nullable(),

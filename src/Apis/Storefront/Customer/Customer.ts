@@ -1,7 +1,8 @@
 import { z } from "zod";
-import { Customer, Item } from "../../Dtos";
-import { Storefront } from "../../Endpoints";
-import { BaseApi } from "../../lib";
+import { Customer, Item } from "../../../Dtos";
+import { Storefront } from "../../../Endpoints";
+import { BaseApi } from "../../../lib";
+import { SubscriptionApi } from "./Subscription";
 
 type TItem = Pick<
   Item.Response,
@@ -25,6 +26,8 @@ type TItem = Pick<
 >;
 
 export class CustomerApi extends BaseApi {
+  private subscriptionApi: SubscriptionApi;
+
   public async get(): Promise<
     Omit<Customer.Response, "created_by" | "updated_by" | "metadata">
   > {
@@ -63,5 +66,12 @@ export class CustomerApi extends BaseApi {
           extend: { customer_id: z.string() },
         }),
     );
+  }
+
+  public get Subscription(): SubscriptionApi {
+    if (!this.subscriptionApi)
+      this.subscriptionApi = new SubscriptionApi(this.config);
+
+    return this.subscriptionApi;
   }
 }
