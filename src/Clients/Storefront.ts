@@ -1,4 +1,5 @@
 import { CartApi, CustomerApi, ProductApi, StoreApi, TagNavApi } from "../Apis";
+import { CheckoutApi } from "../Apis/Storefront/Checkout";
 import { BaseApi } from "../lib";
 
 class Storefront extends BaseApi {
@@ -7,6 +8,7 @@ class Storefront extends BaseApi {
   private productApi: ProductApi;
   private tagNavApi: TagNavApi;
   private cartApi: CartApi;
+  private checkoutApi: CheckoutApi;
 
   public get Store(): StoreApi {
     if (!this.storeApi)
@@ -38,6 +40,12 @@ class Storefront extends BaseApi {
     if (!this.cartApi) this.cartApi = new CartApi(this.config);
 
     return this.cartApi;
+  }
+
+  public get Checkout(): CheckoutApi {
+    if (!this.checkoutApi) this.checkoutApi = new CheckoutApi(this.config);
+
+    return this.checkoutApi;
   }
 }
 
