@@ -48,6 +48,7 @@ export const Search = {
   After: "after",
   End: "end",
   Before: "before",
+  ReturnUrl: "return_url",
 } as const;
 
 export type Search = (typeof Search)[keyof typeof Search];

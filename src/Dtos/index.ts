@@ -1,4 +1,5 @@
 import Cart from "./Cart";
+import Checkout from "./Checkout";
 import Command from "./Command";
 import Coupon from "./Coupon";
 import Customer from "./Customer";
@@ -19,6 +20,7 @@ import User from "./User";
 
 export {
   Cart,
+  Checkout,
   Command,
   Coupon,
   Customer,
