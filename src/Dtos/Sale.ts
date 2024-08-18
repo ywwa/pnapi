@@ -103,6 +103,7 @@ namespace Sale {
       .nullable(),
     discount_type: DiscountTypeEnum,
     discount_amount: z.number(),
+    minimum_order_value: z.number(),
     begins_at: DateSchema,
     ends_at: DateSchema.nullable(),
     created_by: User.Schema.pick({
