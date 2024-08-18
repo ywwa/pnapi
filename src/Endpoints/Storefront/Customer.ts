@@ -1,11 +1,10 @@
 import { makePath } from "../../lib";
 import { AccessType, type Endpoint } from "../../types";
-import { Store } from "./Store";
 
 export namespace Customer {
   export const base: Endpoint = {
     version: 1,
-    path: makePath(Store.path, "customer"),
+    path: "store/customer",
     access: [AccessType.Customer],
   };
 
