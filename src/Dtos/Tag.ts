@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { DateSchema, ParseError, SlugSchema } from "../lib";
+import { SchemaOptions, TResponse } from "../types";
 import User from "./User";
 
 namespace Tag {
@@ -31,10 +32,25 @@ namespace Tag {
     /** Date when the tag was last updated */
     updated_at: Date | null;
 
-    constructor(payload: unknown) {
-      const tag = Schema.safeParse(payload);
+    constructor(
+      payload: unknown,
+      options?: SchemaOptions<TResponse<typeof Schema>>,
+    ) {
+      let schema = options?.omit
+        ? Schema.omit(options.omit)
+        : options?.pick
+          ? Schema.pick(options.pick)
+          : Schema;
+
+      schema = options?.extend ? schema.extend(options.extend) : schema;
+
+      const tag = schema.safeParse(payload);
       if (!tag.success) throw new ParseError(tag.error);
       Object.assign(this, tag.data);
+      Object.keys(this).forEach((key) => {
+        if (this[key as keyof this] === undefined)
+          delete this[key as keyof this];
+      });
     }
   }
 

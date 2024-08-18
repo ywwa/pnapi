@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ParseError } from "../lib";
+import type { SchemaOptions, TResponse } from "../types";
 
 namespace Navlink {
   export class Response {
@@ -18,8 +19,23 @@ namespace Navlink {
     /** Sorting order of navlink */
     order: number;
 
-    constructor(payload: unknown) {
-      const navlink = Schema.safeParse(payload);
+    // NOTE: ONLY STOREFRONT
+    tag_query?: string[];
+    children?: Response[] | null;
+
+    constructor(
+      payload: unknown,
+      options?: SchemaOptions<TResponse<typeof Schema>>,
+    ) {
+      let schema = options?.omit
+        ? Schema.omit(options.omit)
+        : options?.pick
+          ? Schema.pick(options.pick)
+          : Schema;
+
+      schema = options?.extend ? schema.extend(options.extend) : schema;
+
+      const navlink = schema.safeParse(payload);
       if (!navlink.success) throw new ParseError(navlink.error);
       Object.assign(this, navlink.data);
     }

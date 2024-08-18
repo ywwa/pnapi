@@ -3,11 +3,13 @@ import { Navlinks } from "../../Endpoints/Management";
 import { BaseApi } from "../../lib";
 import { Method } from "../../types";
 
+type TNavlink = Omit<Navlink.Response, "tag_query" | "children">;
+
 export class NavlinksApi extends BaseApi {
   public async create(
     body: Navlink.Create.Body,
     storeId?: string,
-  ): Promise<Navlink.Response> {
+  ): Promise<TNavlink> {
     const data = await this.request({
       endpoint: Navlinks.base(this.storeId(storeId)),
       method: Method.POST,
@@ -17,7 +19,7 @@ export class NavlinksApi extends BaseApi {
     return new Navlink.Response(data);
   }
 
-  public async getAll(storeId?: string): Promise<Navlink.Response[]> {
+  public async getAll(storeId?: string): Promise<TNavlink[]> {
     const data = await this.request<Navlink.Response[]>({
       endpoint: Navlinks.base(this.storeId(storeId)),
     });
@@ -25,10 +27,7 @@ export class NavlinksApi extends BaseApi {
     return data.map((navlink) => new Navlink.Response(navlink));
   }
 
-  public async getById(
-    nodeId: string,
-    storeId?: string,
-  ): Promise<Navlink.Response> {
+  public async getById(nodeId: string, storeId?: string): Promise<TNavlink> {
     const data = await this.request({
       endpoint: Navlinks.byId(this.storeId(storeId), nodeId),
     });
@@ -40,7 +39,7 @@ export class NavlinksApi extends BaseApi {
     nodeId: string,
     body: Navlink.Update.Body,
     storeId?: string,
-  ): Promise<Navlink.Response> {
+  ): Promise<TNavlink> {
     const data = await this.request({
       endpoint: Navlinks.byId(this.storeId(storeId), nodeId),
       method: Method.PATCH,
