@@ -3,11 +3,13 @@ import { Products } from "../../Endpoints/Management";
 import { BaseApi } from "../../lib";
 import { Method } from "../../types";
 
+type Response = Omit<Product.Response, "stock" | "pricing" | "currency">;
+
 export class ProductsApi extends BaseApi {
   public async create(
     body: Product.Create.Body,
     storeId?: string,
-  ): Promise<Product.Response> {
+  ): Promise<Response> {
     const data = await this.request({
       endpoint: Products.base(this.storeId(storeId)),
       method: Method.POST,
@@ -17,8 +19,8 @@ export class ProductsApi extends BaseApi {
     return new Product.Response(data);
   }
 
-  public async getAll(storeId?: string): Promise<Product.Response[]> {
-    const data = await this.request<Product.Response[]>({
+  public async getAll(storeId?: string): Promise<Response[]> {
+    const data = await this.request<Response[]>({
       endpoint: Products.base(this.storeId(storeId)),
     });
 
@@ -28,8 +30,8 @@ export class ProductsApi extends BaseApi {
   public async getById(
     productId: string,
     storeId?: string,
-  ): Promise<Product.Response> {
-    const data = await this.request<Product.Response>({
+  ): Promise<Response> {
+    const data = await this.request<Response>({
       endpoint: Products.byId(this.storeId(storeId), productId),
     });
 
@@ -40,7 +42,7 @@ export class ProductsApi extends BaseApi {
     productId: string,
     body: Product.Update.Body,
     storeId?: string,
-  ) {
+  ): Promise<Response> {
     const data = await this.request({
       endpoint: Products.byId(this.storeId(storeId), productId),
       method: Method.PATCH,

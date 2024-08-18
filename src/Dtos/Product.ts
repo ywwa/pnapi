@@ -10,9 +10,16 @@ import {
   validateSubscription,
 } from "../lib";
 import { ScaleEnum } from "../lib/schemas/enum";
-import type { Scale, StockAvailable, StockLimit } from "../types";
+import type {
+  Scale,
+  SchemaOptions,
+  StockAvailable,
+  StockLimit,
+  TResponse,
+} from "../types";
 import Command from "./Command";
 import Gameserver from "./Gameserver";
+import Sale from "./Sale";
 import Tag from "./Tag";
 import User from "./User";
 
@@ -89,10 +96,59 @@ namespace Product {
     /** Date when product was last updated */
     updated_at: Date | null;
 
-    constructor(payload: unknown) {
-      const product = Schema.safeParse(payload);
+    // Following properties are available only in storefront api
+
+    stock?: {
+      available_to_purchase: boolean;
+      customer_available: number;
+    };
+
+    pricing?: {
+      active_sale: Pick<
+        Sale.Response,
+        | "id"
+        | "name"
+        | "discount_type"
+        | "discount_amount"
+        | "minimum_order_value"
+        | "begins_at"
+        | "ends_at"
+      > | null;
+      vat_rate: {
+        country_code: string;
+        country_name: string;
+        currency: string;
+        vat_abbreviation: string;
+        vat_local_name: string;
+        eu_member_state: boolean;
+        percentage: number;
+      } | null;
+      regional_pricing: {} | null;
+      price_original: number;
+      price_final: number;
+    };
+
+    currency?: string;
+
+    constructor(
+      payload: unknown,
+      options?: SchemaOptions<TResponse<typeof Schema>>,
+    ) {
+      let schema = options?.omit
+        ? Schema.omit(options.omit)
+        : options?.pick
+          ? Schema.pick(options.pick)
+          : Schema;
+
+      schema = options?.extend ? schema.extend(options.extend) : schema;
+
+      const product = schema.safeParse(payload);
       if (!product.success) throw new ParseError(product.error);
       Object.assign(this, product.data);
+      Object.keys(this).forEach((key) => {
+        if (this[key as keyof this] === undefined)
+          delete this[key as keyof this];
+      });
     }
   }
 

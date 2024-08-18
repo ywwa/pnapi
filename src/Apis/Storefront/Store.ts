@@ -4,8 +4,8 @@ import { BaseApi } from "../../lib";
 
 export class StoreApi extends BaseApi {
   public async get(
-    storeId?: string,
     withMeta: boolean = false,
+    storeId?: string,
   ): Promise<
     Pick<
       Store.Response,
