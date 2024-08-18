@@ -1,12 +1,10 @@
 {
   "name": "@ywwa/pnapi",
-  "version": "0.1.1",
+  "version": "0.9.0",
   "description": "API Wrapper for Paynow.gg",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "eslint ./src/**/*",
-    "lint:fix": "eslint --fixt ./src/**/*",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "example": "ts-node ./example/index.ts",
