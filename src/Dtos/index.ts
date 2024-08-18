@@ -1,3 +1,4 @@
+import Cart from "./Cart";
 import Command from "./Command";
 import Coupon from "./Coupon";
 import Customer from "./Customer";
@@ -17,6 +18,7 @@ import Token from "./Token";
 import User from "./User";
 
 export {
+  Cart,
   Command,
   Coupon,
   Customer,
