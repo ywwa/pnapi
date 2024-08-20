@@ -1,17 +1,20 @@
-import { config } from "dotenv";
-import Paynow from "../src";
+import * as dotenv from "dotenv";
+import { Management } from "../src";
 
-config();
+dotenv.config();
 
-const main = async () => {
-  const client = new Paynow();
-  client.config = {
-    auth: { type: "apikey", key: process.env.API_KEY },
-    store_id: process.env.STORE_ID,
-  };
+const mc = new Management({
+  access: {
+    type: "user",
+    key: process.env.USER_KEY!,
+  },
+  storeId: process.env.STORE_ID!,
+});
 
-  const store = await client.Management.Stores.get();
+async function example() {
+  const store = await mc.Stores.get();
+
   console.log(store);
-};
+}
 
-main();
+example();

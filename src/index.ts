@@ -1,3 +1,3 @@
-import { Paynow } from "./Paynow";
-export * from "./types";
-export default Paynow;
+export * from "./Apis";
+export { Management, Paynow, Storefront };
+import { Management, Paynow, Storefront } from "./Clients";

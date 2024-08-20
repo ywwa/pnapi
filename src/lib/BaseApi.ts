@@ -1,208 +1,141 @@
-import axios, { type AxiosError, type AxiosRequestConfig } from "axios";
-import { type Schema } from "zod";
+import axios, { type AxiosRequestConfig } from "axios";
 import {
-  Access,
+  AccessType,
+  Header,
   Method,
   type ApiConfig,
-  type ApiRequestOptions,
-  type HeaderOptions,
+  type CustomerMeta,
+  type Endpoint,
+  type EndpointHeaders,
+  type RequestHeader,
   type RequestOptions,
-} from "..";
+  type RequestSearch,
+  type Search,
+} from "../types";
+import { AccessError } from "./errors";
 
-/**
- * Represents a base class for making API requests.
- * @abstract
- */
-export abstract class Api {
-  protected readonly __config: ApiConfig;
+const joinPath = (base: string, ...parts: string[]): string =>
+  [base, ...parts].join("/");
 
-  /**
-   * Constructs a new instance of BaseApi.
-   * @param {ApiConfig} config - Configuration object.
-   */
-  constructor(config: ApiConfig) {
-    this.__config = config;
+export class BaseApi {
+  /** Base API Url */
+  private readonly baseUrl: string = "https://api.paynow.gg";
+  /** Api Client Configuration */
+  protected readonly config: ApiConfig;
+  /** Customer Meta */
+  protected customer?: CustomerMeta;
+
+  constructor(config: ApiConfig);
+  constructor(config: ApiConfig, meta: CustomerMeta);
+
+  constructor(config: ApiConfig, meta?: CustomerMeta) {
+    this.config = config;
+    if (meta) this.customer = meta;
   }
 
-  /**
-   * Helper method to check if the current authentication type matches any of the required types.
-   * Throws an error if authentication type does not match any of the required types.
-   * @param {Access[]} requiredAuthTypes - Array of required authentication types for the operation.
-   * @throws {Error} Throws an error if authentication type does not match any of the required types.
-   */
-  protected _check_auth(requiredAuthTypes: Access[]): void {
-    const currentAuthType = this.__config.auth.type;
-    const validAuthType = requiredAuthTypes.some(
-      (type) => type === currentAuthType,
-    );
+  protected storeId = (storeId: string | undefined): string => {
+    if (!storeId && !this.config.storeId) throw new Error("Missing store_id");
+    return storeId ?? this.config.storeId!;
+  };
 
-    if (!validAuthType) {
-      throw new Error(
-        `This method requires ${requiredAuthTypes.join(" or ")} Authentication.`,
-      );
+  /** Check if the client has access to the endpoint */
+  private checkAuthorization = (
+    current: AccessType,
+    accepted?: AccessType[],
+  ): void => {
+    if (!accepted?.some((type) => type === current)) {
+      throw new AccessError();
     }
-  }
+  };
 
-  /**
-   * Creates URL search parameters from object properties.
-   * @param {Record<string, any>} params - Object containing parameters for the URL search.
-   * @returns {URLSearchParams} The constructed URLSearchParams object.
-   */
-  private __make_search_params(params: Record<string, any>): URLSearchParams {
-    const searchParams = new URLSearchParams();
+  /** Build API Endpoint string */
+  private getEndpoint = (ep: Endpoint): string =>
+    joinPath(`v${ep.version}`, ep.path);
 
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        searchParams.append(key, String(value));
-      }
-    });
-
-    return searchParams;
-  }
-
-  /**
-   * Creates request headers for the API request.
-   * @param {HeaderOptions} headers - Options object containing header configurations.
-   * @returns {Record<string, string>} The constructed headers object.
-   */
-  private __make_headers(headers: HeaderOptions): Record<string, string> {
-    const defaultHeaders: Record<string, string> = {
+  /** Get headers for request */
+  private getHeaders = (
+    headers?: RequestHeader,
+    ephd?: EndpointHeaders,
+    withMeta: boolean = false,
+  ): Record<string, string> => {
+    const reqHeaders: Record<string, string> = {
       "Content-Type": "application/json",
     };
 
-    const { auth, additional } = headers;
+    if (this.config.access.type !== AccessType.Anonymous) {
+      reqHeaders["Authorization"] =
+        `${this.config.access.type} ${this.config.access.key}`;
+    }
 
-    if (auth.key && auth.type !== Access.Anonymous)
-      defaultHeaders["Authorization"] = `${auth.type} ${auth.key}`;
+    if (headers && ephd) {
+      const allHeaders = [...(ephd.required ?? []), ...(ephd.optional ?? [])];
 
-    if (additional) {
-      const additionalHeaders: Record<string, string> = {
-        "store-id": "x-paynow-store-id",
-        "customer-ip": "x-paynow-customer-ip",
-        "customer-countrycode": "x-paynow-customer-countrycode",
-      };
-
-      Object.keys(additional).forEach((key) => {
-        if (additionalHeaders[key])
-          defaultHeaders[additionalHeaders[key]] = additional[key];
+      Object.entries(headers).forEach(([key, value]) => {
+        if (allHeaders.includes(key as Header) && value !== undefined)
+          reqHeaders[key] = value;
       });
     }
 
-    return defaultHeaders;
-  }
-
-  /**
-   * Constructs additional headers required for the API request.
-   *
-   * This method ensures that the `store_id` is present in the configuration.
-   * It also validates that either `customer_ip` or `customer_country_code` is provided.
-   * If these conditions are not met, an error is thrown.
-   *
-   * The constructed headers include the `store-id` and, if available,
-   * the `customer-ip` and `customer-countrycode`.
-   *
-   * @protected
-   * @param {ApiConfig} config - The configuration object containing necessary properties.
-   * @returns {Record<string, string>} The constructed headers object.
-   * @throws {Error} If `store_id` is missing or neither `customer_ip` nor `customer_country_code` is provided.
-   */
-  protected _construct_additional_headers(
-    config: ApiConfig,
-  ): Record<string, string> {
-    if (!config.store_id) throw new Error("ERROR: Missing store_id");
-
-    if (!config.customer_ip && !config.customer_country_code)
-      throw new Error(
-        "Error: Either customer ip or country code most be provided",
-      );
-
-    const headers: { [key: string]: string } = {
-      "store-id": config.store_id,
-    };
-
-    if (config.customer_ip) headers["customer-ip"] = config.customer_ip;
-    if (config.customer_country_code)
-      headers["customer-countrycode"] = config.customer_country_code;
-
-    return headers;
-  }
-
-  /**
-   * Validates data using Zod schema.
-   * @template T - The type of data to validate.
-   * @param {Schema<T>} schema - Zod schema for validation.
-   * @param {any} data - Data to validate against the schema.
-   * @retruns {T} The validated data.
-   * @throws {Error} Throws an error if validation fails.
-   */
-  private __validate = <T>(schema: Schema<T>, data: any): T => {
-    const result = schema.safeParse(data);
-    if (!result.success) {
-      console.debug(result.error.issues);
-      throw new Error("Failed to validate: " + result.error.issues.join(","));
+    if (withMeta && this.customer) {
+      const { ip, country } = this.customer;
+      if (ip) reqHeaders[Header.CustomerIp] = ip;
+      if (country) reqHeaders[Header.CustomerCountry] = country;
     }
 
-    return result.data;
+    return reqHeaders;
   };
 
-  /**
-   * Executes the API Request.
-   * @template T - The expected response data type.
-   * @param {ApiRequestOptions} options - Options for the API request.
-   * @returns {Promise<T>} A promise resolving with the API response data.
-   * @throws {Error} Throws an error if the API request fails.
-   */
-  private async __exec<T>(options: ApiRequestOptions): Promise<T> {
-    try {
-      const config: AxiosRequestConfig = {
-        url: options.url,
-        method: options.method,
-        headers: options.headers,
-        ...(options.data && { data: options.data }),
-        ...(options.search && {
-          params: this.__make_search_params(options.search),
-        }),
-      };
-      // BUG: when using *BUN* sometimes response is "" on
-      //      `/stores/{store.id}/products`
-      return await axios(config).then((response) => response.data);
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        const axiosError: AxiosError = error;
-        console.error(axiosError);
-        throw new Error(
-          `API Request Failed: ${axiosError.response?.status}; ${axiosError.message}`,
-        );
-      } else {
-        throw new Error(`API Request Failed: ${error?.message}`);
-      }
-    }
-  }
+  /** Get search parameters for request */
+  private getSearchParams = (
+    search?: RequestSearch,
+    epsp?: Search[],
+  ): URLSearchParams => {
+    const reqParams = new URLSearchParams();
 
-  /**
-   * Performs an API request with specified options.
-   * @template T - The expected response data type.
-   * @param {RequestOptions} options - Options for the API request including URL, headers, method, data and search parameters.
-   * @returns {Promise<T>} a promise resolving with the API response data.
-   */
-  protected async _request<T>({
-    url,
-    headers = { auth: this.__config.auth },
-    method = Method.Get,
-    data,
-    search,
-    response,
-  }: RequestOptions): Promise<T> {
-    const config: ApiRequestOptions = {
-      url,
-      headers: this.__make_headers(headers),
-      method,
-      data: data ? this.__validate(data.schema, data.params) : undefined,
-      search: search
-        ? this.__validate(search.schema, search.params)
-        : undefined,
-    };
-    const apiResponse = await this.__exec<T>(config);
-    return response ? this.__validate(response, apiResponse) : apiResponse;
-  }
+    if (search) {
+      Object.entries(search).forEach(([k, v]) => {
+        if (
+          epsp?.includes(k as Search) &&
+          v !== undefined &&
+          v !== null &&
+          v !== ""
+        ) {
+          reqParams.append(k, String(v));
+        }
+      });
+    }
+
+    return reqParams;
+  };
+
+  /** Get Axios Config */
+  private axiosConfig = (
+    opts: RequestOptions,
+    withMeta: boolean = false,
+  ): AxiosRequestConfig => ({
+    baseURL: this.baseUrl,
+    url: this.getEndpoint(opts.endpoint),
+    method: opts.method ?? Method.GET,
+    headers: this.getHeaders(opts.headers, opts.endpoint.headers, withMeta),
+    ...(opts.search && {
+      params: this.getSearchParams(opts.search, opts.endpoint.search),
+    }),
+    ...(opts.body && { data: opts.body }),
+  });
+
+  /** Perform API Request to the endpoint */
+  protected request = async <T>(
+    opts: RequestOptions,
+    withMeta: boolean = false,
+  ): Promise<T> => {
+    this.checkAuthorization(this.config.access.type, opts.endpoint.access);
+
+    const axiosConfig: AxiosRequestConfig = this.axiosConfig(opts, withMeta);
+    try {
+      const response = await axios(axiosConfig);
+      return response.data;
+    } catch (error: any) {
+      throw error;
+    }
+  };
 }

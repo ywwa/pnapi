@@ -1,34 +1,58 @@
-/** Supported Games */
 export const Game = {
-  /** Rust */
   Rust: "rust",
-  /** Garry's Mod */
-  Gmod: "gmod",
-  /** Minecraft */
+  GarrysMod: "gmod",
   Minecraft: "minecraft",
-  /** 7 Days to Die */
-  Sdtd: "7d2d",
-  /** Hurtworld */
+  MinecraftOffline: "minecraft_offline",
+  SevenDaysToDie: "7d2d",
   Hurtworld: "hurtworld",
-  /** Other */
   Other: "other",
 } as const;
 
 export type Game = (typeof Game)[keyof typeof Game];
 
-/** Suppoerted Currencies */
 export const Currency = {
-  /** U.S. Dollar */
-  USD: "usd",
-  /** Euro */
   EUR: "eur",
-  /** British Pound */
+  USD: "usd",
   GBP: "gbp",
 } as const;
 
 export type Currency = (typeof Currency)[keyof typeof Currency];
 
-/** Scale */
+export const Platform = {
+  Steam: "steam",
+  Minecraft: "minecraft",
+  MinecraftOffline: "minecraft_offline",
+} as const;
+
+export type Platform = (typeof Platform)[keyof typeof Platform];
+
+export const State = {
+  Usage: "usable",
+  Active: "active",
+  Used: "used",
+  Revoked: "revoked",
+} as const;
+
+export type State = (typeof State)[keyof typeof State];
+
+export const Stage = {
+  PURCHASE: "on_purchase",
+  EXPIRE: "on_expire",
+  RENEW: "on_renew",
+  REFUND: "on_refund",
+  CHARGEBACK: "on_chargeback",
+} as const;
+
+export type Stage = (typeof Stage)[keyof typeof Stage];
+
+export const RevokeReason = {
+  Admin: "admin",
+  Refund: "refund",
+  Chargeback: "chargeback",
+} as const;
+
+export type RevokeReason = (typeof RevokeReason)[keyof typeof RevokeReason];
+
 export const Scale = {
   Day: "day",
   Week: "week",
@@ -38,37 +62,6 @@ export const Scale = {
 
 export type Scale = (typeof Scale)[keyof typeof Scale];
 
-/** Stage */
-export const Stage = {
-  Purchase: "on_purchase",
-  Expire: "on_expire",
-  Renew: "on_renew",
-  Refund: "on_refund",
-  Chargeback: "on_chargeback",
-};
-
-export type Stage = (typeof Stage)[keyof typeof Stage];
-
-/** State */
-export const State = {
-  Usable: "usable",
-  Active: "active",
-  Used: "used",
-  Revoked: "revoked",
-} as const;
-
-export type State = (typeof State)[keyof typeof State];
-
-/** Revoke Reason */
-export const RevokeReason = {
-  Admin: "admin",
-  Refund: "refund",
-  Chargeback: "chargeback",
-} as const;
-
-export type RevokeReason = (typeof RevokeReason)[keyof typeof RevokeReason];
-
-/** Status */
 export const Status = {
   Created: "created",
   Completed: "completed",
@@ -78,10 +71,55 @@ export const Status = {
 
 export type Status = (typeof Status)[keyof typeof Status];
 
-/** Discount Type */
-export const Discount = {
-  Amount: "amount",
-  Percent: "percent",
+export const NotTaxedReason = {
+  NotTaxedReasonExempt: "exempt",
+  NotTaxedReasonNoTax: "no_tax",
+  NotTaxedReasonNotCollecting: "not_collecting",
+  NotTaxedReasonProductNotTaxed: "product_not_taxed",
 } as const;
 
-export type Discount = (typeof Discount)[keyof typeof Discount];
+export type NotTaxedReason =
+  (typeof NotTaxedReason)[keyof typeof NotTaxedReason];
+
+export const DeclineCode = {
+  Unknown: "unknown",
+  GenericDecline: "generic_decline",
+  CallIssuer: "call_issuer",
+  AuthenticationRequired: "authentication_required",
+  CurrencyNotSupported: "currency_not_supported",
+  DuplicateTransaction: "duplicate_transaction",
+  ExpiredCard: "expired_card",
+  Fraudulent: "fraudulent",
+  IncorrectNumber: "incorrect_number",
+  IncorrectCvc: "incorrect_cvc",
+  IncorrectPin: "incorrect_pin",
+  IncorrectZip: "incorrect_zip",
+  InsufficientFunds: "insufficient_funds",
+  InvalidAccount: "invalid_account",
+  InvalidAmount: "invalid_amount",
+  InvalidExpiryMonth: "invalid_expiry_month",
+  InvalidExpiryYear: "invalid_expiry_year",
+  IssuerNotAvailable: "issuer_not_available",
+  LostCard: "lost_card",
+  MerchantBlacklist: "merchant_blacklist",
+  NewAccountInformationAvailable: "new_account_information_available",
+  NoActionTaken: "no_action_taken",
+  PicupCard: "pickup_card",
+  PinTryExceeded: "pin_try_exceeded",
+  RestrictedCard: "restricted_card",
+  StolenCard: "stolen_card",
+  TestmodeDecline: "testmode_decline",
+  TryAgainLater: "try_again_later",
+  SecurityViolation: "security_violation",
+  CardVelocityExceeded: "card_velocity_exceeded",
+  DoNotHonor: "do_not_honor",
+  ProcessingError: "processing_error",
+  CardNotSupported: "card_not_supported",
+  TransactionNotAllowed: "transaction_not_allowed",
+} as const;
+
+export type DeclineCode = (typeof DeclineCode)[keyof typeof DeclineCode];
+
+export const DiscountType = { Amount: "amount", Percent: "percent" } as const;
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType];

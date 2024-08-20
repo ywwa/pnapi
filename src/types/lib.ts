@@ -1,61 +1,38 @@
-import { type ZodSchema } from "zod";
+import { z, ZodRawShape } from "zod";
+import type { AccessType, Header, Method, Search } from "./enum";
 
-export type CustomerMeta = {
-  customer_ip?: string;
-  customer_country_code?: string;
-};
+export type Authorization = { type: AccessType; key?: string };
 
-export type ClientConfig = { auth: Auth; store_id?: string } & CustomerMeta;
+export type ApiConfig = { access: Authorization; storeId?: string };
 
-export type ApiConfig = ClientConfig & {};
+export type CustomerMeta = { ip?: string; country?: string };
 
-export const Access = {
-  User: "user",
-  Api: "apikey",
-  Customer: "customer",
-  Gameserver: "gameserver",
-  Anonymous: "anonymous",
-} as const;
+export type EndpointHeaders = { required?: Header[]; optional?: Header[] };
 
-export type Access = (typeof Access)[keyof typeof Access];
+export interface Endpoint {
+  version: number;
+  path: string;
+  access?: AccessType[];
+  search?: Search[];
+  headers?: EndpointHeaders;
+}
 
-export type Auth = { type: Access; key?: string };
+export type RequestSearch = { [key in Search]?: any };
 
-export type HeaderOptions = {
-  auth: Auth;
-  additional?: Record<string, string>;
-};
+export type RequestHeader = { [key in Header]?: string };
 
-/** Supported HTTP Methods */
-export const Method = {
-  Get: "GET",
-  Post: "POST",
-  Put: "PUT",
-  Patch: "PATCH",
-  Delete: "DELETE",
-} as const;
-
-export type Method = (typeof Method)[keyof typeof Method];
-
-type Options = {
-  url: string;
+export type RequestOptions = {
+  endpoint: Endpoint;
   method?: Method;
-  headers?: HeaderOptions;
-  data?: Record<string, any>;
-  search?: Record<string, any>;
+  headers?: RequestHeader;
+  search?: RequestSearch;
+  body?: Record<string, any>;
 };
 
-export type ApiRequestOptions = Omit<Options, "headers"> & {
-  headers: Record<string, string>;
-};
+export type TResponse<T extends z.ZodType<any, any>> = z.infer<T>;
 
-type ValidationOptions = {
-  schema: ZodSchema;
-  params: Record<string, any>;
-};
-
-export type RequestOptions = Omit<Options, "data" | "search"> & {
-  data?: ValidationOptions;
-  search?: ValidationOptions;
-  response?: ZodSchema;
-};
+export interface SchemaOptions<T> {
+  omit?: Partial<Record<keyof T, true>>;
+  pick?: Partial<Record<keyof T, true>>;
+  extend?: ZodRawShape;
+}
