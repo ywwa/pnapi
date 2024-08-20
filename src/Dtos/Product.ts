@@ -123,7 +123,12 @@ namespace Product {
         eu_member_state: boolean;
         percentage: number;
       } | null;
-      regional_pricing: {} | null;
+      regional_pricing: {
+        region_id: string;
+        currency: string;
+        tax_inclusive: boolean;
+        base_price: number;
+      } | null;
       price_original: number;
       price_final: number;
     };

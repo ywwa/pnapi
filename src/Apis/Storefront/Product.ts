@@ -76,8 +76,14 @@ const extendSchema: Options["extend"] = {
         percentage: z.number(),
       })
       .nullable(),
-    // TODO: @killa / @m0uka gib plz
-    regional_pricing: z.object({}).nullable(),
+    regional_pricing: z
+      .object({
+        region_id: z.string(),
+        currency: z.string(),
+        tax_inclusive: z.boolean(),
+        base_price: z.number(),
+      })
+      .nullable(),
     price_original: z.number(),
     price_final: z.number(),
   }),
