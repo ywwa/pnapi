@@ -1,6 +1,7 @@
 import Cart from "./Cart";
 import Checkout from "./Checkout";
 import Command from "./Command";
+import CommandQueue from "./CommandQueue";
 import Coupon from "./Coupon";
 import Customer from "./Customer";
 import Gameserver from "./Gameserver";
@@ -22,6 +23,7 @@ export {
   Cart,
   Checkout,
   Command,
+  CommandQueue,
   Coupon,
   Customer,
   Gameserver,
