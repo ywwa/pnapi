@@ -1,3 +1,4 @@
+import { Delivery, Management, Paynow, Storefront } from "./Clients";
+
 export * from "./Apis";
-export { Management, Paynow, Storefront };
-import { Management, Paynow, Storefront } from "./Clients";
+export { Delivery, Management, Paynow, Storefront };
