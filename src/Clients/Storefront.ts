@@ -1,6 +1,7 @@
 import { CartApi, CustomerApi, ProductApi, StoreApi, TagNavApi } from "../Apis";
 import { CheckoutApi } from "../Apis/Storefront/Checkout";
 import { BaseApi } from "../lib";
+import { CustomerMeta } from "../types";
 
 class Storefront extends BaseApi {
   private storeApi: StoreApi;
@@ -9,6 +10,10 @@ class Storefront extends BaseApi {
   private tagNavApi: TagNavApi;
   private cartApi: CartApi;
   private checkoutApi: CheckoutApi;
+
+  public set customerMeta(props: CustomerMeta) {
+    this.customer = { ...props };
+  }
 
   public get Store(): StoreApi {
     if (!this.storeApi)
