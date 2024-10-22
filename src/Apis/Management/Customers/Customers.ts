@@ -43,13 +43,17 @@ export class CustomersApi extends BaseApi {
   public async lookup(
     search: Customer.Lookup.Search,
     storeId?: string,
-  ): Promise<Customer.Response> {
-    const data = await this.request({
-      endpoint: Customers.lookup(this.storeId(storeId)),
-      search: new Customer.Lookup.Search(search),
-    });
+  ): Promise<Customer.Response | undefined> {
+    try {
+      const data = await this.request({
+        endpoint: Customers.lookup(this.storeId(storeId)),
+        search: new Customer.Lookup.Search(search),
+      });
 
-    return new Customer.Response(data);
+      return new Customer.Response(data);
+    } catch (error) {
+      return undefined;
+    }
   }
 
   public async update(
