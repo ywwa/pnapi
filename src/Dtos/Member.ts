@@ -7,7 +7,7 @@ namespace Member {
     /** User */
     user: User.Response;
     /** ID of the role (flake) */
-    role_id: string;
+    role_id: string | null;
     /** Date when member was added */
     added_at: Date;
     /** Who added the member (User) */
@@ -21,7 +21,7 @@ namespace Member {
   }
   export const Schema = z.object({
     user: User.Schema,
-    role_id: z.string(),
+    role_id: z.string().nullable(),
     added_at: DateSchema,
     added_by: User.Schema.nullable(),
   });
