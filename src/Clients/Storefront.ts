@@ -1,7 +1,7 @@
 import { CartApi, CustomerApi, ProductApi, StoreApi, TagNavApi } from "../Apis";
 import { CheckoutApi } from "../Apis/Storefront/Checkout";
 import { BaseApi } from "../lib";
-import { CustomerMeta } from "../types";
+import type { Authorization, CustomerMeta } from "../types";
 
 class Storefront extends BaseApi {
   private storeApi: StoreApi;
@@ -13,6 +13,10 @@ class Storefront extends BaseApi {
 
   public set customerMeta(props: CustomerMeta) {
     this.customer = { ...props };
+  }
+
+  public set access(access: Authorization) {
+    this.config.access = access;
   }
 
   public get Store(): StoreApi {
