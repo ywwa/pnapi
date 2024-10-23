@@ -61,7 +61,7 @@ namespace Customer {
 
       const customer = schema.safeParse(payload);
       if (!customer.success) throw new ParseError(customer.error);
-      Object.assign(this, customer);
+      Object.assign(this, customer.data);
     }
   }
 

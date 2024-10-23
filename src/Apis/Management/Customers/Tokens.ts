@@ -8,6 +8,8 @@ export class TokensApi extends BaseApi {
     customerId: string,
     storeId?: string,
   ): Promise<Token.Response> {
+    console.debug(customerId)
+    console.debug(Tokens.byId(this.storeId(storeId), customerId));
     const data = await this.request({
       endpoint: Tokens.byId(this.storeId(storeId), customerId),
       method: Method.POST,
