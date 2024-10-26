@@ -4,7 +4,7 @@ import { Storefront } from "../../Endpoints";
 import { BaseApi } from "../../lib";
 import type { SchemaOptions, TResponse } from "../../types";
 
-type TProduct = Pick<
+export type TProduct = Pick<
   Product.Response,
   | "id"
   | "store_id"
