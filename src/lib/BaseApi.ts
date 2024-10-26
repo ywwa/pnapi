@@ -1,6 +1,7 @@
 import axios, { type AxiosRequestConfig } from "axios";
 import {
   AccessType,
+  Authorization,
   Header,
   Method,
   type ApiConfig,
@@ -27,10 +28,17 @@ export class BaseApi {
 
   constructor(config: ApiConfig);
   constructor(config: ApiConfig, meta: CustomerMeta);
-
   constructor(config: ApiConfig, meta?: CustomerMeta) {
     this.config = config;
     if (meta) this.customer = meta;
+  }
+
+  public set access(access: Authorization) {
+    this.config.access = access;
+  }
+
+  public set customerMeta(meta: CustomerMeta) {
+    this.customer = meta;
   }
 
   protected storeId = (storeId: string | undefined): string => {
@@ -62,7 +70,10 @@ export class BaseApi {
       "Content-Type": "application/json",
     };
 
-    if (this.config.access.type !== AccessType.Anonymous) {
+    if (
+      this.config.access &&
+      this.config.access.type !== AccessType.Anonymous
+    ) {
       reqHeaders["Authorization"] =
         `${this.config.access.type} ${this.config.access.key}`;
     }
@@ -128,7 +139,10 @@ export class BaseApi {
     opts: RequestOptions,
     withMeta: boolean = false,
   ): Promise<T> => {
-    this.checkAuthorization(this.config.access.type, opts.endpoint.access);
+    this.checkAuthorization(
+      this.config.access ? this.config.access.type : "anonymous",
+      opts.endpoint.access,
+    );
 
     const axiosConfig: AxiosRequestConfig = this.axiosConfig(opts, withMeta);
     try {

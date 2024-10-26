@@ -3,7 +3,7 @@ import type { AccessType, Header, Method, Search } from "./enum";
 
 export type Authorization = { type: AccessType; key?: string };
 
-export type ApiConfig = { access: Authorization; storeId?: string };
+export type ApiConfig = { access?: Authorization; storeId?: string };
 
 export type CustomerMeta = { ip?: string; country?: string };
 
