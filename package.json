@@ -1,6 +1,6 @@
 {
   "name": "@ywwa/pnapi",
-  "version": "1.0.4",
+  "version": "1.0.5-dev",
   "description": "API Wrapper for Paynow.gg",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
