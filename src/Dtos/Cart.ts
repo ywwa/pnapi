@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ParseError } from "../lib";
 
-type Line = {
+export type Line = {
   line_key: string;
   product_id: string;
   selected_gameserver_id: string | null;
