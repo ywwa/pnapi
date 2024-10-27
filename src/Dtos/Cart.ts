@@ -20,7 +20,7 @@ const LineSchema = z.object({
   selected_gameserver: z.object({}).nullable(),
   slug: z.string(),
   name: z.string(),
-  image_Url: z.string().nullable(),
+  image_url: z.string().nullable(),
   price: z.number(),
   quantity: z.number(),
 });
@@ -32,7 +32,7 @@ namespace Cart {
     /** ID of the customer (flake) */
     customer_id: string;
     /** Products in the cart */
-    lines: Line[];
+    lines: Array<Line>;
     /** Currency */
     currency: string;
     /** Total amount */
