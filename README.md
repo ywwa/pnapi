@@ -2,6 +2,9 @@
 
 [paynow.gg](https://paynow.gg) Developer API Wrapper.
 
+### NOTE:
+Currently library is kind-of outdated. Sometime soon imma get my hands on rewriting everything from scratch 👀
+
 ## Installation
 
 ```bash
